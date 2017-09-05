@@ -1,52 +1,31 @@
 $(document).ready(function() {
 	
 	//初始化时获取服务器上的文件信息
-	/*$.ajax({
+	$.ajax({
 		type : "get",
-		url : "",
+		url : "showAll",
 		async : true,
 		dataType : "json",
 		success : function(data) {
-			
+			ShowTable(data);
 		},
 		error : function(data) {
 			
 		}
-	});*/
-	ShowTable(tableData);
+	});
 });
-//获取数据
-var tableData=[
-	{
-		name:"平凡的世界",
-		date:"2017-09-04",
-		clickmun:"23",
-		url:"C:\learn"
-	},
-	{
-		name:"挪威的森林",
-		date:"2017-09-03",
-		clickmun:"20",
-		url:"C:\learn"
-	},
-	{
-		name:"上下五千年",
-		date:"2017-09-02",
-		clickmun:"18",
-		url:"C:\learn"
-	}
-]
 //根据获得的数据填充表格
 function ShowTable(data){
 	var table_html = "";
 	var lookFileId="lookfile_"
 	for(var i=0;i<data.length;i++){
-		table_html +="<tr><td style='vertical-align: middle'>"+data[i].name+"</td>";
-		table_html +="<td style='vertical-align: middle'>"+data[i].date+"</td>";
-		table_html +="<td style='vertical-align: middle'>"+data[i].clickmun+"</td>";
-		//table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].url+"\",\""+data[i].clickmun+"\")' class='btn btn-warning' id='lookfile'>浏览</button></td></tr>";
-		//table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].url+"\",\""+data[i].clickmun+"\",\""+lookFileId+i+"\")' class='btn btn-warning' id='lookfile_0'>浏览</button></td></tr>";
-	    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].url+"\",\""+data[i].clickmun+"\",\""+lookFileId+i+"\")' class='btn btn-warning' id='\""+lookFileId+i+"\"'>浏览</button></td></tr>";
+		table_html +="<tr><td style='vertical-align: middle'>"+data[i].fileName+"</td>";
+		var datetime=new Date(data[i].createTime).format("yyyy-MM-dd hh:mm:ss");
+		table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
+		table_html +="<td style='vertical-align: middle'>"+data[i].clicknum+"</td>";
+		//table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].url+"\",\""+data[i].clicknum+"\")' class='btn btn-warning' id='lookfile'>浏览</button></td></tr>";
+		//table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].url+"\",\""+data[i].clicknum+"\",\""+lookFileId+i+"\")' class='btn btn-warning' id='lookfile_0'>浏览</button></td></tr>";
+	    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].location+"\",\""+data[i].clicknum+"\",\""+data[i].id+"\")' class='btn btn-warning' id='\""+lookFileId+i+"\"'>浏览</button></td></tr>";
 	
 	}
 	
@@ -60,9 +39,9 @@ function searchfile(){
 	alert(searchname);
 	$.ajax({
 		type : "post",
-		url : "",
+		url : "queryLike",
 		async : true,
-		data:{name:searchname},
+		data:{string:searchname},
 		dataType : "json",
 		success : function(data) {
 			ShowTable(data);
@@ -74,25 +53,27 @@ function searchfile(){
 }
 
 //浏览文件
-function lookfile(url,clickmun,id){
+function lookfile(url,clicknum,id){
 	var url = url;    //获取文件地址
-	var clickmun = clickmun;  //获取点击数
+	var clicknum = clicknum;  //获取点击数
 	console.log(url);
-	console.log(clickmun);
+	console.log(clicknum);
 	console.log(id);
-	/*$.ajax({
+	$.ajax({
 		type : "get",
-		url : "",
+		url : "clickUpdate",
 		async : true,
-		data:{url:url,clickmun:clickmun},
-		dataType : "",
+		data:{num:clicknum,id:id},
 		success : function(data) {
+			location.reload(true);
 		},
 		error : function(data) {
 			
 		}
-	});*/
-	wait_load(id);
+	});
+	
+	window.open("https://www.baidu.com?src="+url);
+	
 }
 
 
@@ -110,7 +91,7 @@ function inputFile() {
 			if(ext == "xls" || ext == "xlsx" ||ext == "pdf"||ext == "docx"||ext == "doc") {
 				//加载等待时转圈圈
 				wait_load("foo");
-				//$("#uploadFile").submit();
+				$("#uploadFile").submit();
 				$("#filename").text("");
 			} else {
 				alert("请上传Excel、Word、PDF文件");
