@@ -36,7 +36,6 @@ function ShowTable(data){
 //搜索文件
 function searchfile(){
 	var searchname = $("#searchname").val();
-	alert(searchname);
 	$.ajax({
 		type : "post",
 		url : "queryLike",

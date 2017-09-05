@@ -52,7 +52,7 @@ public class PreviewFileDao {
 		System.out.println(str1);
 		str2="%"+str2+"%";
 		System.out.println(str2);
-		String sql="select * from PreviewFile where file_name like ? or create_time like ? or level=? order by create_time desc,clickNum desc,level desc";
+		String sql="select * from PreviewFile where file_name like ? or create_time like binary ? or level=? order by create_time desc,clickNum desc,level desc";
 		return jdbcTemplate.query(sql, rowMapper,str1,str2,str3);
 	}
 	
