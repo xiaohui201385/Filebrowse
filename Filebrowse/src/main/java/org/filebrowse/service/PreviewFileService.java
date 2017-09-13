@@ -22,6 +22,14 @@ public class PreviewFileService {
 		return previewFileDao.getAllByOrder();
 	}
 	
+	public List<PreviewFile> getListByType(int type){
+	    return previewFileDao.getListByType(type);
+	}
+	
+	public PreviewFile getByNameAndDate(String name,Date date){
+	    return previewFileDao.getByNameAndDate(name, date);
+	}
+	
 //	public List<PreviewFile> getListByName(String name){
 //		return previewFileDao.getListByName(name);
 //	}
@@ -35,11 +43,4 @@ public class PreviewFileService {
 //		return previewFileDao.getListByLevel(level);
 //	}
 	
-	public List<PreviewFile> getListBySearch(String string){
-		return previewFileDao.getListBySearch(string,string,string);
-	}
-	
-	public int updateClickNum(Integer num,Integer id){
-		return previewFileDao.updateClickNum(num, id);
-	}
 }

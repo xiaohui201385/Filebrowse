@@ -11,9 +11,16 @@ public class PreviewFile {
 
     private String location;
 
-    private Integer level;
-
-    private Long clicknum;
+    private int type;
+    
+    public void setType(int type) {
+        this.type = type;
+    }
+    
+    public int getType() {
+        return type;
+    }
+    
 
     public Integer getId() {
         return id;
@@ -47,33 +54,17 @@ public class PreviewFile {
         this.location = location == null ? null : location.trim();
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Long getClicknum() {
-        return clicknum;
-    }
-
-    public void setClicknum(Long clicknum) {
-        this.clicknum = clicknum;
-    }
     
     public PreviewFile() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PreviewFile(String fileName, Date createTime, String location, Integer level, Long clicknum) {
+	public PreviewFile(String fileName, Date createTime, String location,int type) {
 		super();
 		this.fileName = fileName;
 		this.createTime = createTime;
 		this.location = location;
-		this.level = level;
-		this.clicknum = clicknum;
+		this.type=type;
 	}
     
     
