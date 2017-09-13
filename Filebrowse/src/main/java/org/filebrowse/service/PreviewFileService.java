@@ -41,7 +41,7 @@ public class PreviewFileService {
 	public List<PreviewFile> getByNameLike(String string){
 	    return previewFileDao.getByNameLike(string);
 	}
-	
+
 //	public List<PreviewFile> getListByName(String name){
 //		return previewFileDao.getListByName(name);
 //	}

@@ -57,7 +57,7 @@ public class PreviewFileDao {
 	    String sql="select * from PreviewFile where file_name like ?";
 	    return jdbcTemplate.query(sql, rowMapper, param);
 	}
-	
+
 	
 	
 //	public List<PreviewFile> getListByName(String name){
