@@ -50,11 +50,12 @@ public class PreviewFileController {
         if (type == null) {
             type = "通知";
         }
-        FileType byName = fileTypeService.getByName(type);
+        FileType byName = fileTypeService.getByName(type).get(0);
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
         return listByType;
     }
 
+    
     @RequestMapping("/preview-fileupload")
     public String fileUpload(@RequestParam(value = "file", required = true) MultipartFile file,
             @RequestParam(value = "type", required = true) String type, HttpServletResponse response)
@@ -64,7 +65,7 @@ public class PreviewFileController {
         System.out.println(file.getOriginalFilename());
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
-        String location = "D:/PreviewFile/" + "/" + type + "/" + file.getOriginalFilename();
+        String location = "D:/PreviewFile/" +  type + "/" + file.getOriginalFilename();
         System.out.println(location);
         File tempFile = new File(location);
         if (!tempFile.getParentFile().exists()) {
@@ -85,20 +86,26 @@ public class PreviewFileController {
 
         is.close();
         out.close();
-        FileType byName = fileTypeService.getByName(type);
-        PreviewFile previewFile = new PreviewFile(file.getOriginalFilename(), new Date(), location, byName.getId());
+        FileType byName = fileTypeService.getByName(type).get(0);
+        if(previewFileService.getByLocation(tempFile.getAbsolutePath())!=null&&previewFileService.getByLocation(tempFile.getAbsolutePath()).size()>0){
+        	previewFileService.updateByLocation(tempFile.getAbsolutePath(), new Date());
+        	response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+            return "index";
+        }
+        PreviewFile previewFile = new PreviewFile(file.getOriginalFilename(), new Date(), tempFile.getAbsolutePath(), byName.getId());
         previewFileService.insertOne(previewFile);
         response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
         return "index";
     }
 
+    @ResponseBody
     @RequestMapping("/downloadFile")
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,
             @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
-            PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime));
+            PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);
             String realPath=result.getLocation();
             File file = new File(realPath);
             FileInputStream fis=new FileInputStream(file);

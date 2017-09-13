@@ -37,10 +37,22 @@ public class PreviewFileDao {
 	    return jdbcTemplate.query(sql, rowMapper, type);
 	}
 	
-	public PreviewFile getByNameAndDate(String name,Date date){
+	public List<PreviewFile> getByNameAndDate(String name,Date date){
 	    String sql = "select * from PreviewFile where file_name=? and create_time=?";
-	    return jdbcTemplate.queryForObject(sql, PreviewFile.class, name,date);
+	    return jdbcTemplate.query(sql, rowMapper, name,date);
 	}
+	
+	public List<PreviewFile> getByLocation(String location){
+		String sql="select * from PreviewFile where location = ?";
+		return jdbcTemplate.query(sql, rowMapper, location);
+	}
+	
+	public int updateByLocation(String location,Date date){
+		String sql="update PreviewFile set create_time = ? where location = ?";
+		return jdbcTemplate.update(sql, date, location);
+	}
+	
+	
 	
 //	public List<PreviewFile> getListByName(String name){
 //		String sql = "select * from PreviewFile where file_name like '%?%'";

@@ -13,7 +13,7 @@ public class FileTypeService {
     @Autowired
     FileTypeDao dao;
     
-    public FileType getByName(String type){
+    public List<FileType> getByName(String type){
         return dao.getByName(type);
     }
     

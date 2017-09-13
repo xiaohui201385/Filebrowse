@@ -17,9 +17,9 @@ public class FileTypeDao {
 
     private final static RowMapper<FileType> rowMapper = new BeanPropertyRowMapper<FileType>(FileType.class);
 
-    public FileType getByName(String type) {
+    public List<FileType> getByName(String type) {
         String sql = "select * from file_type where name = ?";
-        return jdbcTemplate.queryForObject(sql, FileType.class, type);
+        return jdbcTemplate.query(sql, rowMapper, type);
     }
     
     public List<FileType> getAll(){
