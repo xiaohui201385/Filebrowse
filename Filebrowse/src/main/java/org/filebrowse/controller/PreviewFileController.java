@@ -67,8 +67,13 @@ public class PreviewFileController {
     @ResponseBody
     @RequestMapping("/search")
     public PageInfo<PreviewFile> getListBySearchLike(@RequestParam("string")String string,@RequestParam(value="pn",required=false)Integer pn){
-        PageHelper.startPage(pn, 20);
+    	if(pn==null){
+            pn=1;
+        }
+    	PageHelper.startPage(pn, 20);
+    	System.out.println(string);
         List<PreviewFile> byNameLike = previewFileService.getByNameLike(string);
+        System.out.println(byNameLike);
         for(PreviewFile file:byNameLike){
             List<FileType> byId = fileTypeService.getById(file.getType());
             file.setTypeName(byId.get(0).getName());

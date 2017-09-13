@@ -20,24 +20,24 @@ $(document).ready(function() {
 		async : true,
 		dataType : "json",
 		success : function(data) {
+			console.log(data);
 			ShowTable(data);
 		},
 		error : function(data) {
 		}
 	});
 	ShowTable(showdata);
-//	showMen(menudata);
-	showtype(menudata);
+
 });
 //var menudata = ["通知","会议","政策","活动"]
 //显示左边菜单
 function showType(data){
-	var ul ="<ul id='treeMenu' class='tree tree-menu' data-ride='tree'>";
+	var ul ="<ul id='treeMenu' class='' >";
 	for(var i=0;i<data.length;i++){
 		if(i==0){
-			ul +="<li class=' active text-center'><a href='#' onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</a></li>"
+			ul +="<li class='  active text-center' style='list-style:none'><a href='#' id='fristcolor' class=' fristcolor' type='button' onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</a></li>"
 		}else{
-			ul +="<li class=' text-center'><a href='#' onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</a></li>"
+			ul +="<li class=' text-center' style='list-style:none'><a class='color' href='#' type='button' onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</a></li>"
 		}
 	};
 		ul+="</ul>";
@@ -55,16 +55,38 @@ var showdata = [{
 	id:1
 }]
 //根据获得的数据填充表格
-function ShowTable(data){
-	var table_html = "";
-	var lookFileId="lookfile_"
-	for(var i=0;i<data.length;i++){
-		table_html +="<tr><td style='vertical-align: middle'>"+data[i].fileName+"</td>";
-		var datetime=new Date(data[i].createTime).format("yyyy-MM-dd hh:mm:ss");
-		table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
-	    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data[i].location+"\",\""+data[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+function ShowTable(data,state){
+	if(state=="" ||state==null){
+		var tablethead = "<tr><th width='50%'>文件名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
+			//var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
+			var table_html = "";
+			var lookFileId="lookfile_"
+			for(var i=0;i<data.list.length;i++){
+				table_html +="<tr><td style='vertical-align: middle'>"+data.list[i].fileName+"</td>";
+				var datetime=new Date(data.list[i].createTime).format("yyyy-MM-dd hh:mm:ss");
+				table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
+			    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+			}
+			$("#tablethead").html(tablethead);
+			$("#tableContent").html(table_html);
+	}else{
+			var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
+			var table_html = "";
+			var lookFileId="lookfile_"
+			for(var i=0;i<data.list.length;i++){
+				table_html +="<tr><td style='vertical-align: middle'>"+data.list[i].fileName+"</td>";
+				var datetime=new Date(data.list[i].createTime).format("yyyy-MM-dd hh:mm:ss");
+				table_html +="<td style='vertical-align: middle'>"+data.list[i].typeName+"</td>";
+				table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
+			    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+			}
+			$("#tablethead").html(tablethead);
+			$("#tableContent").html(table_html);
+			$('#fristcolor').removeClass('fristcolor');
+			$('#fristcolor').addClass('color');
+			
 	}
-	$("#tableContent").html(table_html);
+	
 	$("th,td").addClass("text-center");
 }
 
@@ -109,23 +131,24 @@ function clickaction(name){
 		error : function(data) {
 		}
 	});
-	$('#treeMenu').on('click', 'a', function() {
-	    $('#treeMenu li.active').removeClass('active');
-	    $(this).closest('li').addClass('active');
-	});
+	
+		$('#fristcolor').removeClass('fristcolor');
+		$('#fristcolor').addClass('color');
+	
 }
 
 //搜索文件
 function searchfile(){
 	var searchname = $("#searchname").val();
 	$.ajax({
-		type : "post",
-		url : "queryLike",
+		type : "get",
+		url : "search",
 		async : true,
 		data:{string:searchname},
 		dataType : "json",
 		success : function(data) {
-			ShowTable(data);
+			console.log(data);
+			ShowTable(data,1);
 		},
 		error : function(data) {
 			
@@ -133,6 +156,7 @@ function searchfile(){
 	});
 }
 
+//分页
 
 
 //浏览文件
