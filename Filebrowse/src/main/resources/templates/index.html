@@ -31,18 +31,19 @@
 				</div>
 			</div>
 		</form>
-		<form class=" navbar-form" style='margin-bottom: 20px;'>
+		<nav class=" navbar-form" style='margin-bottom: 20px;'>
 			<div>
 				<button type="button" class="  btn btn-primary " data-toggle="modal"
 					data-target="#inputModal" style="margin: 0px 258px;">上传文件</button>
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="前输入关键字"
+					<input type="text" class="form-control" placeholder="请输入关键字"
 						id="searchname" name="searchname" />
 				</div>
 				<button type="button" class="btn btn-default" onclick="searchfile()"
 					id="">搜索</button>
 			</div>
-		</form>
+		</nav>
+		
 		<div class="modal fade" id="inputModal">
 			<div class="modal-dialog">
 				<div class="modal-header">
@@ -88,6 +89,7 @@
 						<nav class="menu" data-ride="menu">
 							<div id="showMen"></div>
 						</nav>
+						
 					</div>
 				</div>
 			</div>
@@ -103,11 +105,14 @@
 							</tbody>
 						</table>
 						<div class="text-center">
-							<ul class="pager pager-loose">
-								<li class="previous"><a href="">&nbsp;&nbsp;首页&nbsp;&nbsp;</a></li>
-								<li class="previous disabled"><a href="">上一页</a></li>
-								<li class="next"><a href="">下一页</a></li>
-							</ul>
+							<button class="btn btn-default" onclick="page(0)"> &nbsp;&nbsp;首页&nbsp;&nbsp;</button>
+							<button class="btn btn-default" id="lastpage" onclick="page(1)"> 上一页</button>
+							<button class="btn btn-default" id="nextpage" onclick="page(2)"> 下一页</button>
+							<!-- <ul class="pager pager-loose">
+								<li class="previous"><a href="#" type="button" onclick="page(0)">&nbsp;&nbsp;首页&nbsp;&nbsp;</a></li>
+								<li class="previous" id="lastpage"><a href="#" type="button" onclick="page(1)">上一页</a></li>
+								<li class="next" id="nextpage"><a href="#" type="button" onclick="page(2)">下一页</a></li>
+							</ul> -->
 						</div>
 					</div>
 				</div>
