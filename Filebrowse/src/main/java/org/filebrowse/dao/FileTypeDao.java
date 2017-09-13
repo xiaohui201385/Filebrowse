@@ -27,4 +27,9 @@ public class FileTypeDao {
         return jdbcTemplate.query(sql, rowMapper);
     }
     
+    public List<FileType> getById(Integer id){
+        String sql="select * from file_type where id=?";
+        return jdbcTemplate.query(sql, rowMapper, id);
+    }
+    
 }

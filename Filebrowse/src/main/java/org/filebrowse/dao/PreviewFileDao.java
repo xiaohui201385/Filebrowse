@@ -52,6 +52,12 @@ public class PreviewFileDao {
 		return jdbcTemplate.update(sql, date, location);
 	}
 	
+	public List<PreviewFile> getByNameLike(String str){
+	    String param="'%"+str+"%'";
+	    String sql="select * from PreviewFile where file_name like ?";
+	    return jdbcTemplate.query(sql, rowMapper, param);
+	}
+
 	
 	
 //	public List<PreviewFile> getListByName(String name){

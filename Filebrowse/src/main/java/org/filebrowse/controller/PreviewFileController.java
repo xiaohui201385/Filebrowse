@@ -25,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 @Controller
 public class PreviewFileController {
 
@@ -46,13 +50,31 @@ public class PreviewFileController {
 
     @ResponseBody
     @RequestMapping("/typeList")
-    public List<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type) {
+    public PageInfo<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pn",required=false)Integer pn) {
         if (type == null) {
             type = "通知";
         }
         FileType byName = fileTypeService.getByName(type).get(0);
+        if(pn==null){
+            pn=1;
+        }
+        PageHelper.startPage(pn, 20);
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
-        return listByType;
+        PageInfo<PreviewFile> pageInfo=new PageInfo<>(listByType);
+        return pageInfo;
+    }
+    
+    @ResponseBody
+    @RequestMapping("/search")
+    public PageInfo<PreviewFile> getListBySearchLike(@RequestParam("string")String string,@RequestParam(value="pn",required=false)Integer pn){
+        PageHelper.startPage(pn, 20);
+        List<PreviewFile> byNameLike = previewFileService.getByNameLike(string);
+        for(PreviewFile file:byNameLike){
+            List<FileType> byId = fileTypeService.getById(file.getType());
+            file.setTypeName(byId.get(0).getName());
+        }
+        PageInfo<PreviewFile> pageInfo=new PageInfo<>(byNameLike);
+        return pageInfo;
     }
 
     

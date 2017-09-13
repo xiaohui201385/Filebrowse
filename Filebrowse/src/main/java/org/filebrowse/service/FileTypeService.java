@@ -20,4 +20,8 @@ public class FileTypeService {
     public List<FileType> getAll(){
         return dao.getAll();
     }
+    
+    public List<FileType> getById(Integer id){
+        return dao.getById(id);
+    }
 }
