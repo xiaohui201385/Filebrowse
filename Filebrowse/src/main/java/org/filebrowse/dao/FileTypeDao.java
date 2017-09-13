@@ -17,14 +17,19 @@ public class FileTypeDao {
 
     private final static RowMapper<FileType> rowMapper = new BeanPropertyRowMapper<FileType>(FileType.class);
 
-    public FileType getByName(String type) {
+    public List<FileType> getByName(String type) {
         String sql = "select * from file_type where name = ?";
-        return jdbcTemplate.queryForObject(sql, FileType.class, type);
+        return jdbcTemplate.query(sql, rowMapper, type);
     }
     
     public List<FileType> getAll(){
         String sql = "select * from file_type";
         return jdbcTemplate.query(sql, rowMapper);
+    }
+    
+    public List<FileType> getById(Integer id){
+        String sql="select * from file_type where id=?";
+        return jdbcTemplate.query(sql, rowMapper, id);
     }
     
 }

@@ -20,17 +20,8 @@ public class FileTypeController {
     
     @RequestMapping("/types")
     @ResponseBody
-    public JSONArray getAll(){
-        JSONArray jsonArray = new JSONArray();
-        try {
-            List<FileType> all = fileTypeService.getAll();
-            for(int i = 0 ; i < all.size();i++){
-                jsonArray.put(i, all.get(i).getName());
-            }
-            return jsonArray;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray; 
+    public List<FileType> getAll(){
+        List<FileType> all = fileTypeService.getAll();
+        return all; 
     }
 }

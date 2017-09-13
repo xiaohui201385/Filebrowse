@@ -26,8 +26,20 @@ public class PreviewFileService {
 	    return previewFileDao.getListByType(type);
 	}
 	
-	public PreviewFile getByNameAndDate(String name,Date date){
+	public List<PreviewFile> getByNameAndDate(String name,Date date){
 	    return previewFileDao.getByNameAndDate(name, date);
+	}
+	
+	public List<PreviewFile> getByLocation(String location){
+		return previewFileDao.getByLocation(location);
+	}
+	
+	public int updateByLocation(String location,Date date){
+		return previewFileDao.updateByLocation(location, date);
+	}
+	
+	public List<PreviewFile> getByNameLike(String string){
+	    return previewFileDao.getByNameLike(string);
 	}
 	
 //	public List<PreviewFile> getListByName(String name){
