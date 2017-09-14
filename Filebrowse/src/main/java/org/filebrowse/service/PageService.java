@@ -19,6 +19,9 @@ public class PageService <T>{
     
     public void startPage(int pageNum,int pageSize,List<T> list){
         int fromIndex=(pageNum-1)*pageSize;
+        if(fromIndex>list.size()) {
+        	fromIndex=list.size();
+        }
         int toIndex=fromIndex+pageSize;
         if(toIndex>list.size()){
         	toIndex=list.size();

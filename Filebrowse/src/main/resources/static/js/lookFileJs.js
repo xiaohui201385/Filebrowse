@@ -78,53 +78,59 @@ var showdata = [{
 }]
 //根据获得的数据填充表格
 function ShowTable(data,state){
-	if(state=="" ||state==null){
-		
-		var tablethead = "<tr><th width='50%'>文件名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
-			var table_html = "";
-		if(data.list.length==0){
-			table_html="<span>该分类下未有文件</span>"
-		}else{
-			var lookFileId="lookfile_"
-				for(var i=0;i<data.list.length;i++){
-					table_html +="<tr><td style='vertical-align: middle'>"+data.list[i].fileName+"</td>";
-					var datetime=new Date(data.list[i].createTime).format("yyyy-MM-dd hh:mm:ss");
-					table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
-				    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
-				}
-		}
-			$("#tablethead").html(tablethead);
-			$("#tableContent").html(table_html);
-	}else{
-			var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
-			var table_html = "";
+	if(data.list){
+		if(state=="" ||state==null){
+			
+			var tablethead = "<tr><th width='50%'>文件名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
+				var table_html = "";
 			if(data.list.length==0){
-				table_html="<span>找不到任何相关文件</span>"
+				table_html="<span>该分类下未有文件</span>"
 			}else{
 				var lookFileId="lookfile_"
 					for(var i=0;i<data.list.length;i++){
 						table_html +="<tr><td style='vertical-align: middle'>"+data.list[i].fileName+"</td>";
 						var datetime=new Date(data.list[i].createTime).format("yyyy-MM-dd hh:mm:ss");
-						table_html +="<td style='vertical-align: middle'>"+data.list[i].typeName+"</td>";
 						table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
-					    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
-					}
+//						table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+						table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a onclick='downfile(\""+data.list[i].fileName+"\",\""+datetime+"\")' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+						}
 			}
-			
-			$("#tablethead").html(tablethead);
-			$("#tableContent").html(table_html);
-			$('#fristcolor').removeClass('fristcolor');
-			$('#fristcolor').addClass('color');
-			
+				$("#tablethead").html(tablethead);
+				$("#tableContent").html(table_html);
+		}else{
+				var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
+				var table_html = "";
+				if(data.list.length==0){
+					table_html="<span>找不到任何相关文件</span>"
+				}else{
+					var lookFileId="lookfile_"
+						for(var i=0;i<data.list.length;i++){
+							table_html +="<tr><td style='vertical-align: middle'>"+data.list[i].fileName+"</td>";
+							var datetime=new Date(data.list[i].createTime).format("yyyy-MM-dd hh:mm:ss");
+							table_html +="<td style='vertical-align: middle'>"+data.list[i].typeName+"</td>";
+							table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
+//						    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+						    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a onclick='downfile(\""+data.list[i].fileName+"\",\""+datetime+"\")' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+							
+						}
+				}
+				
+				$("#tablethead").html(tablethead);
+				$("#tableContent").html(table_html);
+				$('#fristcolor').removeClass('fristcolor');
+				$('#fristcolor').addClass('color');
+				
+		}
+		
+		$("th,td").addClass("text-center");
 	}
 	
-	$("th,td").addClass("text-center");
 }
 
 //下载
 function downfile(name,time){
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "downloadFile",
 		async : false,
 		data:{fileName:name,createTime:time},
@@ -135,6 +141,7 @@ function downfile(name,time){
 			console.log(2222);
 		}
 	});
+	return false;
 }
 
 
@@ -205,16 +212,11 @@ function searchfile(){
 
 //判断是否是第一页或者最后一页
 function judgePage(pageNow,pages){
-	if(pageNow == 1){
-		$('#nextpage').removeClass('disabled');
-		$('#lastpage').addClass('disabled');
-	}else if (pageNow == pages) {
-		$('#lastpage').removeClass('disabled');
-		$('#nextpage').addClass('disabled');
-	}else{
-		$('#lastpage').removeClass('disabled');
-		$('#nextpage').removeClass('disabled');
-	}
+	if(pageNow >1) $('#lastpage').removeClass('disabled');
+	else $('#lastpage').addClass('disabled');
+	
+	if(pageNow < pages ) $('#nextpage').removeClass('disabled');
+	else $('#nextpage').addClass('disabled');
 	
 }
 
