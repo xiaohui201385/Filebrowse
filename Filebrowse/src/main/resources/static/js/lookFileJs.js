@@ -96,6 +96,7 @@ function ShowTable(data,state){
 						table_html +="<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""+data.list[i].fileName+"\" name='fileName'/> <input type='text' style='display:none' value=\""+datetime+"\" name='createTime'/></form></td></tr>";
 						
 					}
+
 			}
 				$("#tablethead").html(tablethead);
 				$("#tableContent").html(table_html);
@@ -112,8 +113,10 @@ function ShowTable(data,state){
 							table_html +="<td style='vertical-align: middle'>"+data.list[i].typeName+"</td>";
 							table_html +="<td style='vertical-align: middle'>"+datetime+"</td>";
 //						    table_html +="<td style='vertical-align: middle'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button><a href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"' type='button'  class='btn btn-primary'>下载</a></td></tr>";
+
 						    table_html +="<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
 							table_html +="<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""+data.list[i].fileName+"\" name='fileName'/> <input type='text' style='display:none' value=\""+datetime+"\" name='createTime'/></form></td></tr>";
+
 							
 						}
 				}
