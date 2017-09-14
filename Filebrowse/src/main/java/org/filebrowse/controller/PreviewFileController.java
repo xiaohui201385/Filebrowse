@@ -1,5 +1,7 @@
 package org.filebrowse.controller;
 
+import static org.mockito.Matchers.intThat;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -62,7 +64,6 @@ public class PreviewFileController {
             pn=1;
         }
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
-        System.out.println(listByType.size());
         PageService<PreviewFile> pageService=new PageService<>();
         pageService.startPage(pn, 20, listByType);
         PageMessage<PreviewFile> pageInfo = pageService.getPageInfo();
@@ -93,10 +94,12 @@ public class PreviewFileController {
             throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("UTF-8");
-        System.out.println(file.getOriginalFilename());
+        String tempStr=file.getOriginalFilename();
+        String[] split = tempStr.split("\\\\");
+        String fileTempName=split[split.length-1];
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
-        String location = "D:/PreviewFile/" +  type + "/" + file.getOriginalFilename();
+        String location = "D:/PreviewFile/" +  type + "/" + fileTempName;
         System.out.println(location);
         File tempFile = new File(location);
         if (!tempFile.getParentFile().exists()) {
@@ -104,7 +107,6 @@ public class PreviewFileController {
                 System.out.println("create dir failue");
             }
         }
-        System.out.println(tempFile.getAbsolutePath());
         if (!tempFile.exists()) {
             tempFile.createNewFile();
         }
@@ -130,9 +132,11 @@ public class PreviewFileController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/downloadFile",method=RequestMethod.GET)
+    @RequestMapping(value="/downloadFile",method=RequestMethod.POST)
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,
             @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
+        System.out.println(fileName);
+        System.out.println(createTime);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);
