@@ -130,10 +130,9 @@ public class PreviewFileController {
     }
 
     @ResponseBody
-    @RequestMapping("/downloadFile")
+    @RequestMapping(value="/downloadFile",method=RequestMethod.GET)
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,
             @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);
