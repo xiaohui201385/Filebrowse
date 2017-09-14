@@ -15,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.filebrowse.entity.FileType;
+import org.filebrowse.entity.PageMessage;
 import org.filebrowse.entity.PreviewFile;
 import org.filebrowse.service.FileTypeService;
+import org.filebrowse.service.PageService;
 import org.filebrowse.service.PreviewFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,8 +52,8 @@ public class PreviewFileController {
     }
 
     @ResponseBody
-    @RequestMapping("/typeList")
-    public PageInfo<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pn",required=false)Integer pn) {
+    @RequestMapping(value="/typeList",method=RequestMethod.POST)
+    public PageMessage<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pageNum",required=false)Integer pn) {
         if (type == null) {
             type = "通知";
         }
@@ -58,22 +61,28 @@ public class PreviewFileController {
         if(pn==null){
             pn=1;
         }
-        PageHelper.startPage(pn, 20);
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
-        PageInfo<PreviewFile> pageInfo=new PageInfo<>(listByType);
+        System.out.println(listByType.size());
+        PageService<PreviewFile> pageService=new PageService<>();
+        pageService.startPage(pn, 20, listByType);
+        PageMessage<PreviewFile> pageInfo = pageService.getPageInfo();
         return pageInfo;
     }
     
     @ResponseBody
-    @RequestMapping("/search")
-    public PageInfo<PreviewFile> getListBySearchLike(@RequestParam("string")String string,@RequestParam(value="pn",required=false)Integer pn){
-        PageHelper.startPage(pn, 20);
+    @RequestMapping(value="/search",method=RequestMethod.POST)
+    public PageMessage<PreviewFile> getListBySearchLike(@RequestParam("string")String string,@RequestParam(value="pageNum",required=false)Integer pn){
+    	if(pn==null){
+            pn=1;
+        }
         List<PreviewFile> byNameLike = previewFileService.getByNameLike(string);
         for(PreviewFile file:byNameLike){
             List<FileType> byId = fileTypeService.getById(file.getType());
             file.setTypeName(byId.get(0).getName());
         }
-        PageInfo<PreviewFile> pageInfo=new PageInfo<>(byNameLike);
+        PageService<PreviewFile> pageService=new PageService<>();
+        pageService.startPage(pn, 20, byNameLike);
+        PageMessage<PreviewFile> pageInfo = pageService.getPageInfo();
         return pageInfo;
     }
 
@@ -121,10 +130,9 @@ public class PreviewFileController {
     }
 
     @ResponseBody
-    @RequestMapping("/downloadFile")
+    @RequestMapping(value="/downloadFile",method=RequestMethod.GET)
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,
             @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);

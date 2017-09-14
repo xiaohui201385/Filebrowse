@@ -1,87 +1,126 @@
 <!DOCTYPE HTML>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title>文件浏览</title>
+<head>
+<meta charset="utf-8" />
+<title>文件资源</title>
 
-		<link href="js/zui1.7.0/css/zui.min.css" rel="stylesheet" />
+<link href="js/zui1.7.0/css/zui.min.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet" />
 
-		<script type="text/javascript" src="js/jquery/jquery-3.2.0.min.js"></script>
-		<script src="js/zui1.7.0/js/zui.min.js"></script>
-		<script src="js/loading.js"></script>
-		<script src="js/lookFileJs.js"></script>
+<script type="text/javascript" src="js/jquery/jquery-3.2.0.min.js"></script>
+<script src="js/zui1.7.0/js/zui.min.js"></script>
+<script src="js/loading.js"></script>
+<script src="js/lookFileJs.js"></script>
 
-	</head>
+</head>
 
-	<body>
-		<div class="panel">
-			<!--最顶部-->
-			<div class="panel-heading">
-
-				<form class=" navbar-form" >
-
-					<div>
-						<button type="button" class="  btn btn-primary " data-toggle="modal" data-target="#inputModal" style="margin: 0px 258px;">上传文件</button>
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="前输入关键字" id="searchname" name="searchname" />
-						</div>
-						<button type="button" class="btn btn-default" onclick="searchfile()" id="">搜索</button>
-					</div>
-				</form>
-				<div class="modal fade" id="inputModal">
-					<div class="modal-dialog">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">
-							<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-						</button>
-							<h4 class="modal-title">选择要上传的文件</h4>
-						</div>
-						<div class="modal-body">
-							<form action="preview-fileupload" class=" navbar-form" id="uploadFile"  method="POST" enctype="multipart/form-data">
-
-								<div>
-									<div class="form-group">
-										<input type="file" class="form-control" name="file" id="filename" />
-									</div>
-									
-									<div class="col-sm-4">
-										<label >等级：</label>
-										<select class="form-control" name="filegrade" id="filegrade">
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>
-									</div>
-									
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-							<button type="button" class="btn btn-primary" id="foo" onclick="inputFile()">上传</button>
+<body>
+	<div class="panel">
+		<!--最顶部-->
+		<form class="navbar-form ">
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span12">
+						<div class="page-header">
+							<h1>
+								文件资源 <small></small>
+							</h1>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th width="50%">文件名</th>
-							<th width="20%">上传日期</th>
-							<th width="10%">浏览数</th>
-							<th width="20%">操作</th>
-						</tr>
-					</thead>
-					<tbody id="tableContent">
-				
-					</tbody>
-
-				</table>
+		</form>
+		<nav class=" navbar-form" style='margin-bottom: 20px;'>
+			<div>
+				<button type="button" class="  btn btn-primary " data-toggle="modal"
+					data-target="#inputModal" style="margin: 0px 258px;">上传文件</button>
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="请输入关键字"
+						id="searchname" name="searchname" />
+				</div>
+				<button type="button" class="btn btn-default" onclick="searchfile()"
+					id="">搜索</button>
 			</div>
+		</nav>
+		
+		<div class="modal fade" id="inputModal">
+			<div class="modal-dialog">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">选择要上传的文件</h4>
+				</div>
+				<div class="modal-body">
+					<nav>
+						<form action="preview-fileupload" class="navbar-form"
+							id="uploadFile" method="POST" enctype="multipart/form-data">
+							<div>
+								<div class="form-group">
+									<input type="file" class="form-control" name="file"
+										id="filename" />
+								</div>
+								<div class="col-sm-6">
+									<label>类型：</label>
+									<span id="showoselect"></span>
+									
+								</div>
+							</div>
+						</form>
+					</nav>
 
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="foo"
+						onclick="inputFile()">上传</button>
+				</div>
+			</div>
 		</div>
-	</body>
+		<form class="navbar-form "></form>
+		<div class="row-fluid">
+			<div class="col-md-2 ">
+
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading text-center">文归档分类</div>
+					<div class="panel-body">
+						<nav class="menu" data-ride="menu">
+							<div id="showMen"></div>
+						</nav>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-10 ">
+				<div class="panel panel-default">
+					<div class="panel-heading text-center">文档列表</div>
+					<div class="panel-body">
+						<table class="table table-hover">
+							<thead id="tablethead">
+								
+							</thead>
+							<tbody id="tableContent">
+							</tbody>
+						</table>
+						<div class="text-center">
+							<button class="btn btn-default" onclick="page(0)"> &nbsp;&nbsp;首页&nbsp;&nbsp;</button>
+							<button class="btn btn-default" id="lastpage" onclick="page(1)"> 上一页</button>
+							<button class="btn btn-default" id="nextpage" onclick="page(2)"> 下一页</button>
+							<!-- <ul class="pager pager-loose">
+								<li class="previous"><a href="#" type="button" onclick="page(0)">&nbsp;&nbsp;首页&nbsp;&nbsp;</a></li>
+								<li class="previous" id="lastpage"><a href="#" type="button" onclick="page(1)">上一页</a></li>
+								<li class="next" id="nextpage"><a href="#" type="button" onclick="page(2)">下一页</a></li>
+							</ul> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</body>
 
 </html>
