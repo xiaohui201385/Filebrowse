@@ -112,11 +112,11 @@ function ShowTable(data, state) {
 					// style='margin-right:20px;'>浏览</button><a
 					// href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"'
 					// type='button' class='btn btn-primary'>下载</a></td></tr>";
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick='lookfile(\""
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick=\"lookfile('"
 							+ data.list[i].fileName
-							+ "\",\""
+							+ "','"
 							+ data.list[i].id
-							+ "\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
+							+ "')\" class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
@@ -152,11 +152,11 @@ function ShowTable(data, state) {
 					// href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"'
 					// type='button' class='btn btn-primary'>下载</a></td></tr>";
 
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick='lookfile(\""
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick=\"lookfile('"
 							+ data.list[i].fileName
-							+ "\",\""
+							+ "','"
 							+ data.list[i].id
-							+ "\")' class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
+							+ "')\" class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
