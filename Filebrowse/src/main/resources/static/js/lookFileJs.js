@@ -437,7 +437,11 @@ function lookfile(name, id) {
 	var generatedViewUrl = ViewUrlMask.replace(UrlPlaceholder,
 			encodeURIComponent(originalUrl));
 
-	window.open(generatedViewUrl);
+//	window.open(generatedViewUrl);
+	var aa=window.open();
+	setTimeout(function(){
+	aa.location=generatedViewUrl;
+	}, 100);
 
 }
 
