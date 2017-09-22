@@ -1,19 +1,15 @@
 package org.filebrowse.controller;
 
-import static org.mockito.Matchers.intThat;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.filebrowse.entity.FileType;
@@ -29,10 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 @Controller
 public class PreviewFileController {
@@ -99,7 +91,7 @@ public class PreviewFileController {
         String fileTempName=split[split.length-1];
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
-        String location = "D:/PreviewFile/" +  type + "/" + fileTempName;
+        String location = "C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" +  type + "/" + fileTempName;
         System.out.println(location);
         File tempFile = new File(location);
         if (!tempFile.getParentFile().exists()) {
@@ -125,7 +117,7 @@ public class PreviewFileController {
         	response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
             return "index";
         }
-        PreviewFile previewFile = new PreviewFile(file.getOriginalFilename(), new Date(), tempFile.getAbsolutePath(), byName.getId());
+        PreviewFile previewFile = new PreviewFile(fileTempName, new Date(), tempFile.getAbsolutePath(), byName.getId());
         previewFileService.insertOne(previewFile);
         response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
         return "index";

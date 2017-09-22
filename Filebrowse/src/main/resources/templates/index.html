@@ -43,7 +43,7 @@
 					id="">搜索</button>
 			</div>
 		</nav>
-		
+
 		<div class="modal fade" id="inputModal">
 			<div class="modal-dialog">
 				<div class="modal-header">
@@ -54,19 +54,23 @@
 				</div>
 				<div class="modal-body">
 					<nav>
-						<form action="preview-fileupload" class="navbar-form"
-							id="uploadFile" method="POST" enctype="multipart/form-data">
-							<div>
-								<div class="form-group">
-									<input type="file" class="form-control" name="file"
-										id="filename" />
+						<form action="preview-fileupload" id="uploadFile" method="POST"
+							enctype="multipart/form-data">
+							<div class="navbar-form">
+
+								<div class="">
+									<label>类型：</label> <span id="showoselect"></span>
+
 								</div>
-								<div class="col-sm-6">
-									<label>类型：</label>
-									<span id="showoselect"></span>
-									
-								</div>
+
 							</div>
+
+							<div class="navbar-form">
+								<label>文件：</label> <input type="file" class="form-control"
+									name="file" id="filename"  />
+
+							</div>
+
 						</form>
 					</nav>
 
@@ -89,7 +93,7 @@
 						<nav class="menu" data-ride="menu">
 							<div id="showMen"></div>
 						</nav>
-						
+
 					</div>
 				</div>
 			</div>
@@ -99,15 +103,18 @@
 					<div class="panel-body">
 						<table class="table table-hover">
 							<thead id="tablethead">
-								
+
 							</thead>
 							<tbody id="tableContent">
 							</tbody>
 						</table>
 						<div class="text-center">
-							<button class="btn btn-default" onclick="page(0)"> &nbsp;&nbsp;首页&nbsp;&nbsp;</button>
-							<button class="btn btn-default" id="lastpage" onclick="page(1)"> 上一页</button>
-							<button class="btn btn-default" id="nextpage" onclick="page(2)"> 下一页</button>
+							<button class="btn btn-default" onclick="page(0)">
+								&nbsp;&nbsp;首页&nbsp;&nbsp;</button>
+							<button class="btn btn-default" id="lastpage" onclick="page(1)">
+								上一页</button>
+							<button class="btn btn-default" id="nextpage" onclick="page(2)">
+								下一页</button>
 							<!-- <ul class="pager pager-loose">
 								<li class="previous"><a href="#" type="button" onclick="page(0)">&nbsp;&nbsp;首页&nbsp;&nbsp;</a></li>
 								<li class="previous" id="lastpage"><a href="#" type="button" onclick="page(1)">上一页</a></li>
