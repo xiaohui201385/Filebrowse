@@ -107,7 +107,7 @@ function ShowTable(data, state) {
 					table_html += "<td style='vertical-align: middle'>"
 							+ datetime + "</td>";
 					
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='_Blank' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='"+data.list[i].fileName+"' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
@@ -137,7 +137,7 @@ function ShowTable(data, state) {
 					table_html += "<td style='vertical-align: middle'>"
 							+ datetime + "</td>";
 					
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='_Blank' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='"+data.list[i].fileName+"' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
 					
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName

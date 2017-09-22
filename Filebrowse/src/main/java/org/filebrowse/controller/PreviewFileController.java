@@ -39,11 +39,18 @@ public class PreviewFileController {
     public String index() {
         return "index";
     }
+    
+    @RequestMapping("/index2")
+    public String index2() {
+        return "index2";
+    }
 
     @RequestMapping("/")
     public String home() {
         return "index";
     }
+    
+    
 
     @ResponseBody
     @RequestMapping(value="/typeList",method=RequestMethod.POST)
