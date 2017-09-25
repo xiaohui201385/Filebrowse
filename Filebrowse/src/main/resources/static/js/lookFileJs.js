@@ -44,6 +44,9 @@ var pageNow = "";
 // 总页码
 var pages = "";
 
+//新添加类型值
+var newTypeName ="";
+
 // var menudata = ["通知","会议","政策","活动"]
 // 显示左边菜单
 function showType(data) {
@@ -194,36 +197,41 @@ function downfile(name, time) {
 	return false;
 }
 
-//$(function () {
-//	$("#mySelect").select({
-//		width: "200px"
-//	});
-//});
 
 // 上传时显示类型
 function showTypeUp(data) {
-//	class='form-control'
-	/*var str = "<select class='selectpicker' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option><option onclick='selectClick()'>自定义</option><option >自定义</option><option >自定义</option>";
 
-	for (var i = 0; i < data.length; i++) {
-		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
-				+ "</option>"
-	}*/
-	
-	var str = "<select class='form-control' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option>";
-	for (var i = 0; i < data.length; i++) {
-		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+	var t = 0;
+	var index = -1;
+	for(var i=0;i<data.length ;i++){
+		if(data[i].name == newTypeName){
+			t=1;
+			index = i;
+		}
+	}
+	if(t==1){
+		$('#select_id.selectpicker').append("<option >自定义</option>");
+		$.each(data, function (i) {
+			if(index == i){
+				$('#select_id.selectpicker').append("<option selected='selected' value=" + data[i].name + ">" + data[i].name + "</option>");
 
-				+ "</option>"
+			}else{
+				$('#select_id.selectpicker').append("<option value=" + data[i].name + ">" + data[i].name + "</option>");
+			}
+		  });
+	}else{
+		$('#select_id.selectpicker').append("<option selected='selected' >请选择</option><option >自定义</option>");
+		$.each(data, function (i) {
+		      $('#select_id.selectpicker').append("<option value=" + data[i].name + ">" + data[i].name + "</option>");
+
+		  });
 	}
 	
-	str += "</select>";
-	$("#showoclassselect").html(str);
 	
-//	$("#select_id").select({
-//		width: "200px"
-//	});
 	
+
+
+  $('#select_id').selectpicker('refresh');
 	
 	
 	$("#select_id").change(function(){
@@ -266,31 +274,38 @@ function clickaction(name, li_id) {
 
 // 搜索文件
 function searchfile() {
-	$('li').removeClass('fristcolor');
-	$('li').removeClass('color');
-	$('li').addClass('color');
+	
 	searchname = $("#searchname").val();
-	state = 1;
-	$.ajax({
-		type : "post",
-		url : "search",
-		async : true,
-		data : {
-			string : searchname
-		},
-		dataType : "json",
-		success : function(data) {
+	if(searchname==null || searchname==""){
+		alert("请输入要搜索的文件名");
+	}else{
+		$('li').removeClass('fristcolor');
+		$('li').removeClass('color');
+		$('li').addClass('color');
+		
+		state = 1;
+		$.ajax({
+			type : "post",
+			url : "search",
+			async : true,
+			data : {
+				string : searchname
+			},
+			dataType : "json",
+			success : function(data) {
 
-			console.log(data);
-			pageNow = data.pageNum;
-			pages = data.pages;
-			judgePage(pageNow, pages);
-			ShowTable(data, 1);
-		},
-		error : function(data) {
+				
+				pageNow = data.pageNum;
+				pages = data.pages;
+				judgePage(pageNow, pages);
+				ShowTable(data, 1);
+			},
+			error : function(data) {
 
-		}
-	});
+			}
+		});
+	}
+	
 }
 
 // 判断是否是第一页或者最后一页
@@ -525,10 +540,12 @@ function wait_load(id) {
 
 //添加自定义类型
 function addclass(){
+	$('#select_id.selectpicker').empty();
 	var name = $("#className").val();
 	if(name==null||name==""){
 		alert("请输入要添加的类型名称!");
 	}else{
+		newTypeName =name;
 		$.ajax({
 			type : "get",
 			url : "types-after",
@@ -565,6 +582,8 @@ function addclass(){
 }
 //关闭自定义添加按钮
 function closeModal(){
+	$('#select_id.selectpicker').empty();
+
 	$.ajax({
 		type : "get",
 		url : "types",
