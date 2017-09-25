@@ -39,7 +39,7 @@ public class PreviewFileController {
     @RequestMapping("/index")
     public String index() {
         File[] listFiles = getTypeList();
-        previewFileService.delAll();
+        //previewFileService.delAll();
         fileTypeService.delAll();
         List<FileType> initTypes = initType(listFiles);
         initFiles(initTypes);
@@ -49,7 +49,7 @@ public class PreviewFileController {
     @RequestMapping("/index2")
     public String index2() {
         File[] listFiles = getTypeList();
-        previewFileService.delAll();
+        //previewFileService.delAll();
         fileTypeService.delAll();
         List<FileType> initTypes = initType(listFiles);
         initFiles(initTypes);
@@ -59,7 +59,7 @@ public class PreviewFileController {
     @RequestMapping("/")
     public String home() {
         File[] listFiles = getTypeList();
-        previewFileService.delAll();
+        //previewFileService.delAll();
         fileTypeService.delAll();
         List<FileType> initTypes = initType(listFiles);
         initFiles(initTypes);
