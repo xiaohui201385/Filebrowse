@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	// 初始化时获取服务器上的文件信息
+	// 初始化时获取服务器上的文档信息
 	$.ajax({
 		type : "get",
 		url : "types",
@@ -107,10 +107,10 @@ function ShowTable(data, state) {
 	if (data.list) {
 		if (state == "" || state == null) {
 
-			var tablethead = "<tr><th width='50%'>文件名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
+			var tablethead = "<tr><th width='50%'>文档名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
 			var table_html = "";
 			if (data.list.length == 0) {
-				table_html = "<span>该分类下未有文件</span>"
+				table_html = "<span>该分类下未有文档</span>"
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
@@ -137,10 +137,10 @@ function ShowTable(data, state) {
 			$("#tablethead").html(tablethead);
 			$("#tableContent").html(table_html);
 		} else {
-			var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
+			var tablethead = "<tr><th width='50%'>文档名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
 			var table_html = "";
 			if (data.list.length == 0) {
-				table_html = "<span>找不到任何相关文件</span>"
+				table_html = "<span>找不到任何相关文档</span>"
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
@@ -272,12 +272,12 @@ function clickaction(name, li_id) {
 
 }
 
-// 搜索文件
+// 搜索文档
 function searchfile() {
 	
 	searchname = $("#searchname").val();
 	if(searchname==null || searchname==""){
-		alert("请输入要搜索的文件名");
+		alert("请输入要搜索的文档名");
 	}else{
 		$('li').removeClass('fristcolor');
 		$('li').removeClass('color');
@@ -455,11 +455,11 @@ function page(e) {
 
 }
 
-// 浏览文件
+// 浏览文档
 function lookfile(name) {
-	var name = name; // 获取文件
+	var name = name; // 获取文档
 
-	var type = typeName; // 获取文件类型
+	var type = typeName; // 获取文档类型
 
 	var ViewUrlMask = "http:\u002f\u002fdocviewserver.docview.com\u002fop\u002fview.aspx?src=WACFILEURL";
 	var EmbedCodeMask = "\u003ciframe src=\u0027http:\u002f\u002fcdz.read.com\u002fop\u002fembed.aspx?src=WACFILEURL\u0027 width=\u0027476px\u0027 height=\u0027288px\u0027 frameborder=\u00270\u0027\u003eThis is an embedded \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u0027\u003eMicrosoft Office\u003c\u002fa\u003e document, powered by \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u002fwebapps\u0027\u003eOffice Web Apps\u003c\u002fa\u003e.\u003c\u002fiframe\u003e";
@@ -481,7 +481,7 @@ function lookfile(name) {
 
 }
 
-// 上传文件
+// 上传文档
 function inputFile() {
 	var select = $("#select_id").val();
 	
@@ -490,11 +490,11 @@ function inputFile() {
 		alert("请选择要上传文档的类型！");
 	}else{
 		if (file == '' || file == null) {
-			alert("请选择所要上传的文件！");
+			alert("请选择所要上传的文档！");
 		} else {
 			var index = file.lastIndexOf(".");
 			if (index < 0) {
-				alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
+				alert("上传的文档格式不正确，请上传Excel、Word、PDF文档");
 			} else {
 				var ext = file.substring(index + 1, file.length);
 				if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
@@ -505,7 +505,7 @@ function inputFile() {
 					$("#uploadFile").submit();
 					$("#filename").text("");
 				} else {
-					alert("请上传Excel、Word、PDF文件");
+					alert("请上传Excel、Word、PDF文档");
 				}
 			}
 		}
