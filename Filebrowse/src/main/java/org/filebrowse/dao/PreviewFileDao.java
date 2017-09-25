@@ -1,11 +1,15 @@
 package org.filebrowse.dao;
 
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.filebrowse.entity.PreviewFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -57,6 +61,40 @@ public class PreviewFileDao {
 	    System.out.println(param);
 	    String sql="select * from PreviewFile where file_name like ? order by create_time desc";
 	    return jdbcTemplate.query(sql, rowMapper, param);
+	}
+	
+	public int delByType(List<Integer> typeId){
+	    String sql="delete from PreviewFile where type not in (?)";
+	    return jdbcTemplate.update(sql, typeId);
+	}
+	
+	public int delAll(){
+	    String sql="delete from PreviewFile";
+	    return jdbcTemplate.update(sql);
+	}
+	
+	public void addList(List<PreviewFile> previewFiles){
+	    String sql="insert into PreviewFile(file_name,create_time,location,type) values(?,?,?,?)";
+	    jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                String fileName=previewFiles.get(i).getFileName();
+                Date time=previewFiles.get(i).getCreateTime();
+                String location=previewFiles.get(i).getLocation();
+                int type=previewFiles.get(i).getType();
+                ps.setString(1, fileName);
+                SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                ps.setString(2, dateFormat.format(time));
+                ps.setString(3, location);
+                ps.setInt(4, type);
+            }
+            
+            @Override
+            public int getBatchSize() {
+                return previewFiles.size();
+            }
+        });
 	}
 
 	
