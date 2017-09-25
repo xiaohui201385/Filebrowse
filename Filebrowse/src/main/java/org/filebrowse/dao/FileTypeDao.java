@@ -1,7 +1,5 @@
 package org.filebrowse.dao;
 
-import static org.mockito.Matchers.intThat;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
