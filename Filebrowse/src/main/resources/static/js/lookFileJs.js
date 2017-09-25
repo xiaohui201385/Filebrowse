@@ -545,6 +545,21 @@ function addclass(){
 
 			}
 		});
+		$.ajax({
+			type : "post",
+			url : "typeList",
+			async : true,
+			dataType : "json",
+			success : function(data) {
+				console.log(data);
+				pageNow = data.pageNum;
+				pages = data.pages;
+				judgePage(pageNow, pages);
+				ShowTable(data);
+			},
+			error : function(data) {
+			}
+		});
 	}
 	
 }
