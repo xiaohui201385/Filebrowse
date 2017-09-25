@@ -181,16 +181,33 @@ function downfile(name, time) {
 	return false;
 }
 
+//$(function () {
+//	$("#mySelect").select({
+//		width: "200px"
+//	});
+//});
 // 上传时显示类型
 function showTypeUp(data) {
-	var str = "<select class='form-control' name='type' id='filegrade'>";
+	var str = "<select class='form-control' name='type' id='select_id' onfocus='selectFocus()'> <option selected='selected' onclick='selectClick()'>请选择</option><option onclick='selectClick()'>自定义</option><option onclick='selectClick()'>自定义</option><option onclick='selectClick()'>自定义</option><option onclick='selectClick()'>自定义</option>";
 	for (var i = 0; i < data.length; i++) {
-		str += "<option value=\"" + data[i].name + "\">" + data[i].name
+		str += "<option  onclick='selectClick()' value=\"" + data[i].name + "\">" + data[i].name
 				+ "</option>"
 	}
-	;
+	
 	str += "</select>";
 	$("#showoselect").html(str);
+	
+//	$("#select_id").select({
+////		width: "200px"
+//	});
+	
+	$("#select_id").change(function(){
+		
+	       var selected=$(this).children('option:selected').val()
+	       if(selected=="自定义"){
+	    	   $('#addclass').modal();
+	       }
+	   });
 }
 
 // 点击左边
@@ -426,29 +443,34 @@ function lookfile(name) {
 
 // 上传文件
 function inputFile() {
-	// var files = $("#filename").files;
-	// alert(files);
+	var select = $("#select_id").val();
+	
 	var file = $("#filename").val();
-	if (file == '' || file == null) {
-		alert("请选择所要上传的文件！");
-	} else {
-		var index = file.lastIndexOf(".");
-		if (index < 0) {
-			alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
+	if(select =="请选择" || select =="自定义"){
+		alert("请选择要上传文档的类型！");
+	}else{
+		if (file == '' || file == null) {
+			alert("请选择所要上传的文件！");
 		} else {
-			var ext = file.substring(index + 1, file.length);
-			if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
-					|| ext == "doc" || ext == "wps" || ext == "ppt"
-					|| ext == "pptx") {
-				// 加载等待时转圈圈
-				wait_load("foo");
-				$("#uploadFile").submit();
-				$("#filename").text("");
+			var index = file.lastIndexOf(".");
+			if (index < 0) {
+				alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
 			} else {
-				alert("请上传Excel、Word、PDF文件");
+				var ext = file.substring(index + 1, file.length);
+				if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
+						|| ext == "doc" || ext == "wps" || ext == "ppt"
+						|| ext == "pptx") {
+					// 加载等待时转圈圈
+					wait_load("foo");
+					$("#uploadFile").submit();
+					$("#filename").text("");
+				} else {
+					alert("请上传Excel、Word、PDF文件");
+				}
 			}
 		}
 	}
+	
 }
 
 // 加载等待时转圈圈
@@ -475,3 +497,31 @@ function wait_load(id) {
 	var spinner = new Spinner(spinnerOpts);
 	spinner.spin(target);
 }
+
+//添加自定义类型
+function addclass(){
+	var name = $("#className").val();
+	alert(name);
+	$.ajax({
+		type : "get",
+		url : "types",
+		async : true,
+		dataType : "json",
+		success : function(data) {
+			showType(data);
+			showTypeUp(data);
+		},
+		error : function(data) {
+
+		}
+	});
+}
+
+function selectFocus(){  
+    document.getElementById("select_id").setAttribute("size","5");  
+}  
+function selectClick(){  
+    document.getElementById("select_id").removeAttribute("size");  
+    document.getElementById("select_id").blur();  
+    this.setAttribute("select_id","");  
+}  
