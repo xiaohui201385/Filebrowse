@@ -116,7 +116,7 @@
 		<div class="modal fade" id="addclass">
 			<div class="modal-dialog">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
+					<button type="button" class="close" data-dismiss="modal" onclick="closeModal()">
 						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 					</button>
 					<h4 class="modal-title">选择输入类型名称</h4>
@@ -138,7 +138,8 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-default" onclick="closeModal()">关闭</button>
+
 					<button type="button" class="btn btn-primary" id="foo"
 						onclick="addclass()">添加</button>
 				</div>

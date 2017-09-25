@@ -38,11 +38,21 @@ public class PreviewFileController {
 
     @RequestMapping("/index")
     public String index() {
+        File[] listFiles = getTypeList();
+        previewFileService.delAll();
+        fileTypeService.delAll();
+        List<FileType> initTypes = initType(listFiles);
+        initFiles(initTypes);
         return "index";
     }
     
     @RequestMapping("/index2")
     public String index2() {
+        File[] listFiles = getTypeList();
+        previewFileService.delAll();
+        fileTypeService.delAll();
+        List<FileType> initTypes = initType(listFiles);
+        initFiles(initTypes);
         return "index2";
     }
 
@@ -105,7 +115,13 @@ public class PreviewFileController {
     @RequestMapping(value="/typeList",method=RequestMethod.POST)
     public PageMessage<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pageNum",required=false)Integer pn) {
         if (type == null) {
-            type = "通知";
+            List<FileType> all = fileTypeService.getAll();
+            if(all!=null&all.size()>0){
+                type = fileTypeService.getAll().get(0).getName();
+            }
+            else{
+                type="error";
+            }
         }
         FileType byName = new FileType(1, null);
         if(fileTypeService.getByName(type)!=null&&fileTypeService.getByName(type).size()>0){
@@ -114,7 +130,6 @@ public class PreviewFileController {
         if(pn==null){
             pn=1;
         }
-        System.out.println(byName);
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
         PageService<PreviewFile> pageService=new PageService<>();
         pageService.startPage(pn, 20, listByType);
@@ -198,7 +213,7 @@ public class PreviewFileController {
             @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
         System.out.println(fileName);
         System.out.println(createTime);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);
             String realPath=result.getLocation();

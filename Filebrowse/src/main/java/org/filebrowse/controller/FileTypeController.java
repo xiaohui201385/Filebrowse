@@ -35,15 +35,15 @@ public class FileTypeController {
     @RequestMapping("/types-after")
     @ResponseBody
     public List<FileType> getAfterAdd(@RequestParam(value="typeName",required=true)String typeName ){
-        File[] typeList = getTypeList();
-        previewFileService.delAll();
-        fileTypeService.delAll();
-        initType(typeList);
         List<FileType> byName = fileTypeService.getByName(typeName);
         if(byName==null||byName.size()<1){
             File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
             file.mkdirs();
         }
+        File[] typeList = getTypeList();
+        previewFileService.delAll();
+        fileTypeService.delAll();
+        initType(typeList);
         return fileTypeService.getAll();
     }
     

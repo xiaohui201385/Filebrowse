@@ -30,7 +30,7 @@ $(document).ready(function() {
 		}
 	});
 	$("#searchname").val("");
-	ShowTable(showdata);
+//	ShowTable(showdata);
 
 });
 // 存放搜索时的数据
@@ -204,6 +204,7 @@ function downfile(name, time) {
 function showTypeUp(data) {
 //	class='form-control'
 	/*var str = "<select class='selectpicker' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option><option onclick='selectClick()'>自定义</option><option >自定义</option><option >自定义</option>";
+
 	for (var i = 0; i < data.length; i++) {
 		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
 				+ "</option>"
@@ -212,6 +213,7 @@ function showTypeUp(data) {
 	var str = "<select class='form-control' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option>";
 	for (var i = 0; i < data.length; i++) {
 		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+
 				+ "</option>"
 	}
 	
@@ -524,7 +526,30 @@ function wait_load(id) {
 //添加自定义类型
 function addclass(){
 	var name = $("#className").val();
-	alert(name);
+	if(name==null||name==""){
+		alert("请输入要添加的类型名称!");
+	}else{
+		$.ajax({
+			type : "get",
+			url : "types-after",
+			async : true,
+			data:{typeName:name},
+			dataType : "json",
+			success : function(data) {
+				console.log(data);
+				showType(data);
+				showTypeUp(data);
+				$("#addclass").modal('hide');
+			},
+			error : function(data) {
+
+			}
+		});
+	}
+	
+}
+//关闭自定义添加按钮
+function closeModal(){
 	$.ajax({
 		type : "get",
 		url : "types",
@@ -533,6 +558,8 @@ function addclass(){
 		success : function(data) {
 			showType(data);
 			showTypeUp(data);
+			$("#addclass").modal('hide');
+
 		},
 		error : function(data) {
 
