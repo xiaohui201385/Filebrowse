@@ -204,6 +204,7 @@ function downfile(name, time) {
 function showTypeUp(data) {
 //	class='form-control'
 	/*var str = "<select class='selectpicker' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option><option onclick='selectClick()'>自定义</option><option >自定义</option><option >自定义</option>";
+
 	for (var i = 0; i < data.length; i++) {
 		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
 				+ "</option>"
@@ -212,6 +213,7 @@ function showTypeUp(data) {
 	var str = "<select class='form-control' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option>";
 	for (var i = 0; i < data.length; i++) {
 		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+
 				+ "</option>"
 	}
 	
@@ -572,12 +574,14 @@ function closeModal(){
 			showType(data);
 			showTypeUp(data);
 			$("#addclass").modal('hide');
+
 		},
 		error : function(data) {
 
 		}
 	});
 }
+
 function selectFocus(){  
     document.getElementById("select_id").setAttribute("size","5");  
 }  
