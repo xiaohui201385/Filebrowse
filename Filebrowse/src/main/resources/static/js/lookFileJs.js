@@ -30,7 +30,7 @@ $(document).ready(function() {
 		}
 	});
 	$("#searchname").val("");
-	ShowTable(showdata);
+//	ShowTable(showdata);
 
 });
 // 存放搜索时的数据
@@ -76,17 +76,29 @@ function showType(data) {
 	ul += "</ul>";
 	$("#showMen").html(ul);
 }
-var showdata = [ {
-	fileName : "平凡的世界",
-	createTime : "2017-09-13",
-	location : "\\",
-	id : 1
-}, {
-	fileName : "狂人日记",
-	createTime : "2017-09-13",
-	location : "\\",
-	id : 1
-} ]
+
+//设置时间格式
+Date.prototype.format = function(format) {
+    var date = {
+           "M+": this.getMonth() + 1,
+           "d+": this.getDate(),
+           "h+": this.getHours(),
+           "m+": this.getMinutes(),
+           "s+": this.getSeconds(),
+           "q+": Math.floor((this.getMonth() + 3) / 3),
+           "S+": this.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+           format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in date) {
+           if (new RegExp("(" + k + ")").test(format)) {
+                  format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                         ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+           }
+    }
+    return format;
+}
 // 根据获得的数据填充表格
 function ShowTable(data, state) {
 	if (data.list) {
@@ -103,8 +115,9 @@ function ShowTable(data, state) {
 					var url =lookfile(data.list[i].fileName);
 					table_html += "<tr><td style='vertical-align: middle'>"
 							+ data.list[i].fileName + "</td>";
-					var datetime = new Date(data.list[i].createTime)
-							.format("yyyy-MM-dd hh:mm:ss");
+					
+					var datetime = new Date(data.list[i].createTime).format('yyyy-MM-dd h:m:s');
+					
 					table_html += "<td style='vertical-align: middle'>"
 							+ datetime + "</td>";
 					
@@ -131,8 +144,8 @@ function ShowTable(data, state) {
 					var url =lookfile(data.list[i].fileName);
 					table_html += "<tr><td style='vertical-align: middle'>"
 							+ data.list[i].fileName + "</td>";
-					var datetime = new Date(data.list[i].createTime)
-							.format("yyyy-MM-dd hh:mm:ss");
+					var datetime = new Date(data.list[i].createTime).format('yyyy-MM-dd h:m:s');
+					
 					table_html += "<td style='vertical-align: middle'>"
 							+ data.list[i].typeName + "</td>";
 					table_html += "<td style='vertical-align: middle'>"
@@ -181,16 +194,43 @@ function downfile(name, time) {
 	return false;
 }
 
+//$(function () {
+//	$("#mySelect").select({
+//		width: "200px"
+//	});
+//});
+
 // 上传时显示类型
 function showTypeUp(data) {
-	var str = "<select class='form-control' name='type' id='filegrade'>";
+//	class='form-control'
+	/*var str = "<select class='selectpicker' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option><option onclick='selectClick()'>自定义</option><option >自定义</option><option >自定义</option>";
 	for (var i = 0; i < data.length; i++) {
-		str += "<option value=\"" + data[i].name + "\">" + data[i].name
+		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+				+ "</option>"
+	}*/
+	
+	var str = "<select class='form-control' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option>";
+	for (var i = 0; i < data.length; i++) {
+		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
 				+ "</option>"
 	}
-	;
+	
 	str += "</select>";
-	$("#showoselect").html(str);
+	$("#showoclassselect").html(str);
+	
+//	$("#select_id").select({
+//		width: "200px"
+//	});
+	
+	
+	
+	$("#select_id").change(function(){
+		
+	       var selected=$(this).children('option:selected').val()
+	       if(selected=="自定义"){
+	    	   $('#addclass').modal();
+	       }
+	   });
 }
 
 // 点击左边
@@ -426,29 +466,34 @@ function lookfile(name) {
 
 // 上传文件
 function inputFile() {
-	// var files = $("#filename").files;
-	// alert(files);
+	var select = $("#select_id").val();
+	
 	var file = $("#filename").val();
-	if (file == '' || file == null) {
-		alert("请选择所要上传的文件！");
-	} else {
-		var index = file.lastIndexOf(".");
-		if (index < 0) {
-			alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
+	if(select =="请选择" || select =="自定义"){
+		alert("请选择要上传文档的类型！");
+	}else{
+		if (file == '' || file == null) {
+			alert("请选择所要上传的文件！");
 		} else {
-			var ext = file.substring(index + 1, file.length);
-			if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
-					|| ext == "doc" || ext == "wps" || ext == "ppt"
-					|| ext == "pptx") {
-				// 加载等待时转圈圈
-				wait_load("foo");
-				$("#uploadFile").submit();
-				$("#filename").text("");
+			var index = file.lastIndexOf(".");
+			if (index < 0) {
+				alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
 			} else {
-				alert("请上传Excel、Word、PDF文件");
+				var ext = file.substring(index + 1, file.length);
+				if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
+						|| ext == "doc" || ext == "wps" || ext == "ppt"
+						|| ext == "pptx") {
+					// 加载等待时转圈圈
+					wait_load("foo");
+					$("#uploadFile").submit();
+					$("#filename").text("");
+				} else {
+					alert("请上传Excel、Word、PDF文件");
+				}
 			}
 		}
 	}
+	
 }
 
 // 加载等待时转圈圈
@@ -475,3 +520,54 @@ function wait_load(id) {
 	var spinner = new Spinner(spinnerOpts);
 	spinner.spin(target);
 }
+
+//添加自定义类型
+function addclass(){
+	var name = $("#className").val();
+	if(name==null||name==""){
+		alert("请输入要添加的类型名称!");
+	}else{
+		$.ajax({
+			type : "get",
+			url : "types-after",
+			async : true,
+			data:{typeName:name},
+			dataType : "json",
+			success : function(data) {
+				console.log(data);
+				showType(data);
+				showTypeUp(data);
+				$("#addclass").modal('hide');
+			},
+			error : function(data) {
+
+			}
+		});
+	}
+	
+}
+//关闭自定义添加按钮
+function closeModal(){
+	$.ajax({
+		type : "get",
+		url : "types",
+		async : true,
+		dataType : "json",
+		success : function(data) {
+			showType(data);
+			showTypeUp(data);
+			$("#addclass").modal('hide');
+		},
+		error : function(data) {
+
+		}
+	});
+}
+function selectFocus(){  
+    document.getElementById("select_id").setAttribute("size","5");  
+}  
+function selectClick(){  
+    document.getElementById("select_id").removeAttribute("size");  
+    document.getElementById("select_id").blur();  
+    this.setAttribute("select_id","");  
+}  

@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class PreviewFileDao {
 
@@ -25,7 +26,6 @@ public class PreviewFileDao {
 	
 	public int insertOne(PreviewFile file){
 		String sql="insert into PreviewFile(file_name,create_time,location,type) values(?,?,?,?)";
-		
 		return jdbcTemplate.update(sql, file.getFileName(),file.getCreateTime(),file.getLocation(),file.getType());
 	}
 	
@@ -42,6 +42,7 @@ public class PreviewFileDao {
 	}
 	
 	public List<PreviewFile> getByNameAndDate(String name,Date date){
+	    System.out.println(date.toString());
 	    String sql = "select * from PreviewFile where file_name=? and create_time=?";
 	    return jdbcTemplate.query(sql, rowMapper, name,date);
 	}
@@ -84,7 +85,7 @@ public class PreviewFileDao {
                 String location=previewFiles.get(i).getLocation();
                 int type=previewFiles.get(i).getType();
                 ps.setString(1, fileName);
-                SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 ps.setString(2, dateFormat.format(time));
                 ps.setString(3, location);
                 ps.setInt(4, type);

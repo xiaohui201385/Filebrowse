@@ -3,13 +3,23 @@
 
 <head>
 <meta charset="utf-8" />
-<title>文件资源</title>
+<title>文档资源</title>
 
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-select.css" rel="stylesheet" />
 <link href="js/zui1.7.0/css/zui.min.css" rel="stylesheet" />
 <link href="css/style.css" rel="stylesheet" />
+<link href="css/select.css" rel="stylesheet" />
+
+
+
 
 <script type="text/javascript" src="js/jquery/jquery-3.2.0.min.js"></script>
-<script src="js/zui1.7.0/js/zui.min.js"></script>
+<!-- <script src="js/zui1.7.0/js/zui.min.js"></script>
+ -->
+
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-select.js"></script>
 <script src="js/loading.js"></script>
 <script src="js/lookFileJs.js"></script>
 
@@ -24,17 +34,19 @@
 					<div class="span12">
 						<div class="page-header">
 							<h1>
-								文件资源 <small></small>
+								文档资源 <small></small>
 							</h1>
 						</div>
 					</div>
 				</div>
 			</div>
 		</form>
+
+
 		<nav class=" navbar-form" style='margin-bottom: 20px;'>
 			<div align="right">
 				<button type="button" class="  btn btn-primary " data-toggle="modal"
-					data-target="#inputModal" style="margin: 0px 20%;">上传文件</button>
+					data-target="#inputModal" style="margin: 0px 20%;">上传文档</button>
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="请输入关键字"
 						id="searchname" name="searchname" />
@@ -44,30 +56,49 @@
 			</div>
 		</nav>
 
-		<div class="modal fade" id="inputModal">
+		<div class="modal" id="inputModal">
+
 			<div class="modal-dialog">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 					</button>
-					<h4 class="modal-title">选择要上传的文件</h4>
+					<h4 class="modal-title">选择要上传的文档</h4>
 				</div>
 				<div class="modal-body">
+
 					<nav>
+
 						<form action="preview-fileupload" id="uploadFile" method="POST"
 							enctype="multipart/form-data">
-							<div class="navbar-form">
 
-								<div class="">
-									<label>类型：</label> <span id="showoselect"></span>
+							<div class="navbar-form">
+								<!-- <span><select class="selectpicker" id='select_id' data-size="6">
+									<option>A</option>
+									<option>Banana</option>
+									<option>Orange</option>
+									<option>Pineapple</option>
+									<option>Apple2</option>
+									<option>Banana2</option>
+									<option>Orange2</option>
+									<option>Pineapple2</option>
+									<option>Apple2</option>
+									<option>Banana2</option>
+									<option>Orange2</option>
+									<option>Pineapple2</option>
+								</select></span> -->
+								<div>
+									<label>类型：</label> 
+									
+									<span id="showoclassselect"></span>
 
 								</div>
 
 							</div>
 
 							<div class="navbar-form">
-								<label>文件：</label> <input type="file" class="form-control"
-									name="file" id="filename"  />
+								<label>文档：</label> <input type="file" class="form-control"
+									name="file" id="filename" />
 
 							</div>
 
@@ -82,7 +113,37 @@
 				</div>
 			</div>
 		</div>
-		
+		<div class="modal fade" id="addclass">
+			<div class="modal-dialog">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onclick="closeModal()">
+						<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">选择输入类型名称</h4>
+				</div>
+				<div class="modal-body">
+					<nav>
+						<form action="preview-fileupload" id="uploadFile" method="POST"
+							enctype="multipart/form-data">
+
+
+							<div class="navbar-form">
+								<label>类型名称：</label> <input type="text" class="form-control"
+									name="className" id="className" placeholder="选择输入类型名称" />
+
+							</div>
+
+						</form>
+					</nav>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick="closeModal()">关闭</button>
+					<button type="button" class="btn btn-primary" id="foo"
+						onclick="addclass()">添加</button>
+				</div>
+			</div>
+		</div>
 		<div class="row-fluid">
 			<div class="col-md-2 ">
 
