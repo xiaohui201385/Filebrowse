@@ -44,8 +44,8 @@ public class FileTypeController {
             file.mkdirs();
         }
         File[] typeList = getTypeList();
-        previewFileService.delAll();
-        //fileTypeService.delAll();
+        //previewFileService.delAll();
+        fileTypeService.delAll();
         List<FileType> initType = initType(typeList);
         initFiles(initType);
         return fileTypeService.getAll();

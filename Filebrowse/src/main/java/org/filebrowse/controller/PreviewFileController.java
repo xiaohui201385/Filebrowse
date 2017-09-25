@@ -198,12 +198,14 @@ public class PreviewFileController {
         FileType byName = fileTypeService.getByName(type).get(0);
         if(previewFileService.getByLocation(tempFile.getAbsolutePath())!=null&&previewFileService.getByLocation(tempFile.getAbsolutePath()).size()>0){
         	previewFileService.updateByLocation(tempFile.getAbsolutePath(), new Date());
-        	response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+        	//response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+        	response.getWriter().println("<script>alert('上传成功');window.location.href='index?a="+new Date().getTime()+"';</script>");
             return "index";
         }
         PreviewFile previewFile = new PreviewFile(fileTempName, new Date(), tempFile.getAbsolutePath(), byName.getId());
         previewFileService.insertOne(previewFile);
-        response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+        //response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+        response.getWriter().println("<script>alert('上传成功');window.location.href='index?a="+new Date().getTime()+"';</script>");
         return "index";
     }
 

@@ -1,3 +1,10 @@
+//禁止所有ajax缓存
+$(function(){
+    $.ajaxSetup ({
+        cache: false //false为关闭，ture为打开
+    });
+});
+
 $(document).ready(function() {
 
 	// 初始化时获取服务器上的文件信息
@@ -609,3 +616,5 @@ function selectClick(){
     document.getElementById("select_id").blur();  
     this.setAttribute("select_id","");  
 }  
+
+
