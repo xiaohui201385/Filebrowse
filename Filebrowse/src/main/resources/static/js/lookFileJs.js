@@ -99,24 +99,16 @@ function ShowTable(data, state) {
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
+					
+					var url =lookfile(data.list[i].fileName);
 					table_html += "<tr><td style='vertical-align: middle'>"
 							+ data.list[i].fileName + "</td>";
 					var datetime = new Date(data.list[i].createTime)
 							.format("yyyy-MM-dd hh:mm:ss");
 					table_html += "<td style='vertical-align: middle'>"
 							+ datetime + "</td>";
-					// table_html +="<td style='vertical-align: middle'><button
-					// type='button'
-					// onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")'
-					// class='btn btn-warning'
-					// style='margin-right:20px;'>浏览</button><a
-					// href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"'
-					// type='button' class='btn btn-primary'>下载</a></td></tr>";
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick=\"lookfile('"
-							+ data.list[i].fileName
-							+ "','"
-							+ data.list[i].id
-							+ "')\" class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
+					
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='"+data.list[i].id+"' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
@@ -136,6 +128,7 @@ function ShowTable(data, state) {
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
+					var url =lookfile(data.list[i].fileName);
 					table_html += "<tr><td style='vertical-align: middle'>"
 							+ data.list[i].fileName + "</td>";
 					var datetime = new Date(data.list[i].createTime)
@@ -144,19 +137,9 @@ function ShowTable(data, state) {
 							+ data.list[i].typeName + "</td>";
 					table_html += "<td style='vertical-align: middle'>"
 							+ datetime + "</td>";
-					// table_html +="<td style='vertical-align: middle'><button
-					// type='button'
-					// onclick='lookfile(\""+data.list[i].location+"\",\""+data.list[i].id+"\")'
-					// class='btn btn-warning'
-					// style='margin-right:20px;'>浏览</button><a
-					// href='downloadFile?fileName="+data.list[i].fileName+"&createTime="+datetime+"'
-					// type='button' class='btn btn-primary'>下载</a></td></tr>";
-
-					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><button type='button' onclick=\"lookfile('"
-							+ data.list[i].fileName
-							+ "','"
-							+ data.list[i].id
-							+ "')\" class='btn btn-warning'  style='margin-right:20px;'>浏览</button>"
+					
+					table_html += "<td style='vertical-align: middle'><form action='downloadFile' method='post'><a type='button' href='"+url+"' target='"+data.list[i].id+"' class='btn btn-warning'  style='margin-right:20px;'>浏览</a>"
+					
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
@@ -416,7 +399,7 @@ function page(e) {
 }
 
 // 浏览文件
-function lookfile(name, id) {
+function lookfile(name) {
 	var name = name; // 获取文件
 
 	var type = typeName; // 获取文件类型
@@ -437,7 +420,7 @@ function lookfile(name, id) {
 	var generatedViewUrl = ViewUrlMask.replace(UrlPlaceholder,
 			encodeURIComponent(originalUrl));
 
-	window.open(generatedViewUrl);
+	return generatedViewUrl;
 
 }
 
