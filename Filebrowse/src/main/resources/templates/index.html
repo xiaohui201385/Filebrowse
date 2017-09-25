@@ -5,17 +5,21 @@
 <meta charset="utf-8" />
 <title>文档资源</title>
 
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap-select.css" rel="stylesheet" />
 <link href="js/zui1.7.0/css/zui.min.css" rel="stylesheet" />
 <link href="css/style.css" rel="stylesheet" />
 <link href="css/select.css" rel="stylesheet" />
-<link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+
+
+
 
 <script type="text/javascript" src="js/jquery/jquery-3.2.0.min.js"></script>
-<script type="text/javascript"
-	src="js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
-<script type="text/javascript" src="js/jquery/jquery.select.js"></script>
-<script src="js/zui1.7.0/js/zui.min.js"></script>
+<!-- <script src="js/zui1.7.0/js/zui.min.js"></script>
+ -->
 
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-select.js"></script>
 <script src="js/loading.js"></script>
 <script src="js/lookFileJs.js"></script>
 
@@ -37,20 +41,8 @@
 				</div>
 			</div>
 		</form>
-		<!-- <select id="mySelect">
-			<option value="1">成功1</option>
-			<option value="2">成功2</option>
-			<option value="3">成功3</option>
-			<option value="4">成功4</option>
-			<option value="5">失败5</option>
-			<option value="6">失败6</option>
-			<option value="7">失败7</option>
-			<option value="8">失败8</option>
-			<option value="9">失败9</option>
-			<option value="10">失败10</option>
-			<option value="11">失败11</option>
-			<option value="12">失败12</option>
-		</select> -->
+
+
 		<nav class=" navbar-form" style='margin-bottom: 20px;'>
 			<div align="right">
 				<button type="button" class="  btn btn-primary " data-toggle="modal"
@@ -64,7 +56,8 @@
 			</div>
 		</nav>
 
-		<div class="modal fade" id="inputModal">
+		<div class="modal" id="inputModal">
+
 			<div class="modal-dialog">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
@@ -73,13 +66,31 @@
 					<h4 class="modal-title">选择要上传的文档</h4>
 				</div>
 				<div class="modal-body">
+
 					<nav>
+
 						<form action="preview-fileupload" id="uploadFile" method="POST"
 							enctype="multipart/form-data">
-							<div class="navbar-form">
 
-								<div class="">
-									<label>类型：</label> <span id="showoselect"></span>
+							<div class="navbar-form">
+								<!-- <span><select class="selectpicker" id='select_id' data-size="6">
+									<option>A</option>
+									<option>Banana</option>
+									<option>Orange</option>
+									<option>Pineapple</option>
+									<option>Apple2</option>
+									<option>Banana2</option>
+									<option>Orange2</option>
+									<option>Pineapple2</option>
+									<option>Apple2</option>
+									<option>Banana2</option>
+									<option>Orange2</option>
+									<option>Pineapple2</option>
+								</select></span> -->
+								<div>
+									<label>类型：</label> 
+									
+									<span id="showoclassselect"></span>
 
 								</div>
 
