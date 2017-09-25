@@ -41,6 +41,14 @@ public class PreviewFileService {
 	public List<PreviewFile> getByNameLike(String string){
 	    return previewFileDao.getByNameLike(string);
 	}
+	
+	public int delAll(){
+	    return previewFileDao.delAll();
+	}
+	
+	public void addList(List<PreviewFile> previewFiles){
+	    previewFileDao.addList(previewFiles);
+	}
 
 //	public List<PreviewFile> getListByName(String name){
 //		return previewFileDao.getListByName(name);

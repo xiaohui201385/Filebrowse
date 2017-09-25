@@ -24,4 +24,16 @@ public class FileTypeService {
     public List<FileType> getById(Integer id){
         return dao.getById(id);
     }
+    
+    public int delAll(){
+        return dao.delAll();
+    }
+    
+    public int addOne(FileType fileType){
+        return dao.addOne(fileType);
+    }
+    
+    public void addList(List<FileType> fileTypes) {
+        dao.addList(fileTypes);
+    }
 }

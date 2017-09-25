@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +48,55 @@ public class PreviewFileController {
 
     @RequestMapping("/")
     public String home() {
+        File[] listFiles = getTypeList();
+        previewFileService.delAll();
+        fileTypeService.delAll();
+        List<FileType> initTypes = initType(listFiles);
+        initFiles(initTypes);
         return "index";
+    }
+
+    private void initFiles(List<FileType> initTypes) {
+        List<PreviewFile> previewFiles=new ArrayList<>();
+        for(FileType fileType:initTypes){
+            int type=fileType.getId();
+            String typeName=fileType.getName();
+            File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
+            File[] files = file.listFiles();
+            if(files.length>0){
+                for(File f:files){
+                    String fileName=f.getName();
+                    Date time=new Date(f.lastModified());
+                    String location=f.getAbsolutePath();
+                    PreviewFile previewFile = new PreviewFile(fileName, time, location, type);
+                    previewFiles.add(previewFile);
+                }
+            }
+        }
+        previewFileService.addList(previewFiles);
+    }
+
+    private List<FileType> initType(File[] listFiles) {
+        List<FileType> fileTypes=new ArrayList<>();
+        if(listFiles.length>0){
+            for(int i=0;i<listFiles.length;i++){
+                File listFile=listFiles[i];
+                String name=listFile.getName();
+                FileType fileType=new FileType(i+1, name);
+                fileTypes.add(fileType);
+            }
+        }
+        fileTypeService.addList(fileTypes);
+        return fileTypes;
+    }
+    
+    private File[] getTypeList(){
+        File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/");
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        File[] listFiles = file.listFiles();
+        return listFiles;
     }
     
     
@@ -58,10 +107,14 @@ public class PreviewFileController {
         if (type == null) {
             type = "通知";
         }
-        FileType byName = fileTypeService.getByName(type).get(0);
+        FileType byName = new FileType(1, null);
+        if(fileTypeService.getByName(type)!=null&&fileTypeService.getByName(type).size()>0){
+            byName=fileTypeService.getByName(type).get(0);
+        }
         if(pn==null){
             pn=1;
         }
+        System.out.println(byName);
         List<PreviewFile> listByType = previewFileService.getListByType(byName.getId());
         PageService<PreviewFile> pageService=new PageService<>();
         pageService.startPage(pn, 20, listByType);
@@ -75,7 +128,16 @@ public class PreviewFileController {
     	if(pn==null){
             pn=1;
         }
-        List<PreviewFile> byNameLike = previewFileService.getByNameLike(string);
+    	char[] strChar=string.toCharArray();
+    	List<PreviewFile> byNameLike=new ArrayList<>();
+    	for(int i=0;i<strChar.length;i++){
+    	    List<PreviewFile> list = previewFileService.getByNameLike(String.valueOf(strChar[i]));
+    	    for(PreviewFile pf:list){
+    	        if(!byNameLike.contains(pf)){
+    	            byNameLike.add(pf);
+    	        }
+    	    }
+    	}
         for(PreviewFile file:byNameLike){
             List<FileType> byId = fileTypeService.getById(file.getType());
             file.setTypeName(byId.get(0).getName());
