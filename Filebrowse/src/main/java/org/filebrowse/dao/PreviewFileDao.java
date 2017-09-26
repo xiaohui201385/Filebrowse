@@ -97,6 +97,11 @@ public class PreviewFileDao {
             }
         });
 	}
+	
+	public int delByLocation(String location){
+	    String sql="delete from PreviewFile where location=?";
+	    return jdbcTemplate.update(sql, location);
+	}
 
 	
 	

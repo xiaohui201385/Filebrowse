@@ -49,6 +49,11 @@ public class FileTypeDao {
         return jdbcTemplate.update(sql, fileType.getId(),fileType.getName());
     }
     
+    public int addOneDefault(FileType fileType){
+        String sql="insert into file_type(name) values(?)";
+        return jdbcTemplate.update(sql,fileType.getName());
+    }
+    
     public void addList(List<FileType> fileTypes){
         String sql="insert into file_type(id,name) values(?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -66,6 +71,11 @@ public class FileTypeDao {
                 return fileTypes.size();
             }
         });
+    }
+    
+    public int delByName(String name){
+        String sql="delete from file_type where name=?";
+        return jdbcTemplate.update(sql, name);
     }
     
 }

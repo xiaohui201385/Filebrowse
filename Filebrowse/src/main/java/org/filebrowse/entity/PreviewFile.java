@@ -76,6 +76,60 @@ public class PreviewFile {
 		this.location = location;
 		this.type=type;
 	}
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
+        result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        result = prime * result + type;
+        result = prime * result + ((typeName == null) ? 0 : typeName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PreviewFile other = (PreviewFile) obj;
+        if (createTime == null) {
+            if (other.createTime != null)
+                return false;
+        } else if (!createTime.equals(other.createTime))
+            return false;
+        if (fileName == null) {
+            if (other.fileName != null)
+                return false;
+        } else if (!fileName.equals(other.fileName))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (location == null) {
+            if (other.location != null)
+                return false;
+        } else if (!location.equals(other.location))
+            return false;
+        if (type != other.type)
+            return false;
+        if (typeName == null) {
+            if (other.typeName != null)
+                return false;
+        } else if (!typeName.equals(other.typeName))
+            return false;
+        return true;
+    }
+	
+	
     
     
 }

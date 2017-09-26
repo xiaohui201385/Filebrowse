@@ -28,7 +28,22 @@ public class FileType {
         this.name = name;
     }
     
+    public FileType(String name){
+        super();
+        this.name=name;
+    }
+    
     public FileType() {
         // TODO Auto-generated constructor stub
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        FileType fileType=(FileType) obj;
+        if(this.name.equals(fileType.getName())){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

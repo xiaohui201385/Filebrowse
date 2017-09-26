@@ -36,4 +36,12 @@ public class FileTypeService {
     public void addList(List<FileType> fileTypes) {
         dao.addList(fileTypes);
     }
+    
+    public int addOneDefault(FileType fileType){
+        return dao.addOneDefault(fileType);
+    }
+    
+    public int delByName(String name){
+        return dao.delByName(name);
+    }
 }
