@@ -49,6 +49,10 @@ public class PreviewFileService {
 	public void addList(List<PreviewFile> previewFiles){
 	    previewFileDao.addList(previewFiles);
 	}
+	
+	public int delByLocation(String location){
+	    return previewFileDao.delByLocation(location);
+	}
 
 //	public List<PreviewFile> getListByName(String name){
 //		return previewFileDao.getListByName(name);

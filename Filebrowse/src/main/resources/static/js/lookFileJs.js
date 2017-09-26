@@ -1,13 +1,6 @@
-//禁止所有ajax缓存
-$(function(){
-    $.ajaxSetup ({
-        cache: false //false为关闭，ture为打开
-    });
-});
-
 $(document).ready(function() {
 
-	// 初始化时获取服务器上的文档信息
+	// 初始化时获取服务器上的文件信息
 	$.ajax({
 		type : "get",
 		url : "types",
@@ -50,9 +43,6 @@ var state = 0;
 var pageNow = "";
 // 总页码
 var pages = "";
-
-//新添加类型值
-var newTypeName ="";
 
 // var menudata = ["通知","会议","政策","活动"]
 // 显示左边菜单
@@ -114,10 +104,10 @@ function ShowTable(data, state) {
 	if (data.list) {
 		if (state == "" || state == null) {
 
-			var tablethead = "<tr><th width='50%'>文档名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
+			var tablethead = "<tr><th width='50%'>文件名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
 			var table_html = "";
 			if (data.list.length == 0) {
-				table_html = "<span>该分类下未有文档</span>"
+				table_html = "<span>该分类下未有文件</span>"
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
@@ -144,10 +134,10 @@ function ShowTable(data, state) {
 			$("#tablethead").html(tablethead);
 			$("#tableContent").html(table_html);
 		} else {
-			var tablethead = "<tr><th width='50%'>文档名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
+			var tablethead = "<tr><th width='50%'>文件名</th><th width='10%'>类型</th><th width='20%'>上传日期</th><th width='20%'>操作</th></tr>"
 			var table_html = "";
 			if (data.list.length == 0) {
-				table_html = "<span>找不到任何相关文档</span>"
+				table_html = "<span>找不到任何相关文件</span>"
 			} else {
 				var lookFileId = "lookfile_"
 				for (var i = 0; i < data.list.length; i++) {
@@ -204,41 +194,34 @@ function downfile(name, time) {
 	return false;
 }
 
+//$(function () {
+//	$("#mySelect").select({
+//		width: "200px"
+//	});
+//});
 
 // 上传时显示类型
 function showTypeUp(data) {
-
-	var t = 0;
-	var index = -1;
-	for(var i=0;i<data.length ;i++){
-		if(data[i].name == newTypeName){
-			t=1;
-			index = i;
-		}
-	}
-	if(t==1){
-		$('#select_id.selectpicker').append("<option >自定义</option>");
-		$.each(data, function (i) {
-			if(index == i){
-				$('#select_id.selectpicker').append("<option selected='selected' value=" + data[i].name + ">" + data[i].name + "</option>");
-
-			}else{
-				$('#select_id.selectpicker').append("<option value=" + data[i].name + ">" + data[i].name + "</option>");
-			}
-		  });
-	}else{
-		$('#select_id.selectpicker').append("<option selected='selected' >请选择</option><option >自定义</option>");
-		$.each(data, function (i) {
-		      $('#select_id.selectpicker').append("<option value=" + data[i].name + ">" + data[i].name + "</option>");
-
-		  });
+//	class='form-control'
+	/*var str = "<select class='selectpicker' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option><option onclick='selectClick()'>自定义</option><option >自定义</option><option >自定义</option>";
+	for (var i = 0; i < data.length; i++) {
+		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+				+ "</option>"
+	}*/
+	
+	var str = "<select class='form-control' data-size='6' name='type' id='select_id' > <option selected='selected' >请选择</option><option >自定义</option>";
+	for (var i = 0; i < data.length; i++) {
+		str += "<option  value=\"" + data[i].name + "\">" + data[i].name
+				+ "</option>"
 	}
 	
+	str += "</select>";
+	$("#showoclassselect").html(str);
 	
+//	$("#select_id").select({
+//		width: "200px"
+//	});
 	
-
-
-  $('#select_id').selectpicker('refresh');
 	
 	
 	$("#select_id").change(function(){
@@ -279,40 +262,33 @@ function clickaction(name, li_id) {
 
 }
 
-// 搜索文档
+// 搜索文件
 function searchfile() {
-	
+	$('li').removeClass('fristcolor');
+	$('li').removeClass('color');
+	$('li').addClass('color');
 	searchname = $("#searchname").val();
-	if(searchname==null || searchname==""){
-		alert("请输入要搜索的文档名");
-	}else{
-		$('li').removeClass('fristcolor');
-		$('li').removeClass('color');
-		$('li').addClass('color');
-		
-		state = 1;
-		$.ajax({
-			type : "post",
-			url : "search",
-			async : true,
-			data : {
-				string : searchname
-			},
-			dataType : "json",
-			success : function(data) {
+	state = 1;
+	$.ajax({
+		type : "post",
+		url : "search",
+		async : true,
+		data : {
+			string : searchname
+		},
+		dataType : "json",
+		success : function(data) {
 
-				
-				pageNow = data.pageNum;
-				pages = data.pages;
-				judgePage(pageNow, pages);
-				ShowTable(data, 1);
-			},
-			error : function(data) {
+			console.log(data);
+			pageNow = data.pageNum;
+			pages = data.pages;
+			judgePage(pageNow, pages);
+			ShowTable(data, 1);
+		},
+		error : function(data) {
 
-			}
-		});
-	}
-	
+		}
+	});
 }
 
 // 判断是否是第一页或者最后一页
@@ -462,11 +438,11 @@ function page(e) {
 
 }
 
-// 浏览文档
+// 浏览文件
 function lookfile(name) {
-	var name = name; // 获取文档
+	var name = name; // 获取文件
 
-	var type = typeName; // 获取文档类型
+	var type = typeName; // 获取文件类型
 
 	var ViewUrlMask = "http:\u002f\u002fdocviewserver.docview.com\u002fop\u002fview.aspx?src=WACFILEURL";
 	var EmbedCodeMask = "\u003ciframe src=\u0027http:\u002f\u002fcdz.read.com\u002fop\u002fembed.aspx?src=WACFILEURL\u0027 width=\u0027476px\u0027 height=\u0027288px\u0027 frameborder=\u00270\u0027\u003eThis is an embedded \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u0027\u003eMicrosoft Office\u003c\u002fa\u003e document, powered by \u003ca target=\u0027_blank\u0027 href=\u0027http:\u002f\u002foffice.com\u002fwebapps\u0027\u003eOffice Web Apps\u003c\u002fa\u003e.\u003c\u002fiframe\u003e";
@@ -488,7 +464,7 @@ function lookfile(name) {
 
 }
 
-// 上传文档
+// 上传文件
 function inputFile() {
 	var select = $("#select_id").val();
 	
@@ -497,11 +473,11 @@ function inputFile() {
 		alert("请选择要上传文档的类型！");
 	}else{
 		if (file == '' || file == null) {
-			alert("请选择所要上传的文档！");
+			alert("请选择所要上传的文件！");
 		} else {
 			var index = file.lastIndexOf(".");
 			if (index < 0) {
-				alert("上传的文档格式不正确，请上传Excel、Word、PDF文档");
+				alert("上传的文件格式不正确，请上传Excel、Word、PDF文件");
 			} else {
 				var ext = file.substring(index + 1, file.length);
 				if (ext == "xls" || ext == "xlsx" || ext == "pdf" || ext == "docx"
@@ -512,7 +488,7 @@ function inputFile() {
 					$("#uploadFile").submit();
 					$("#filename").text("");
 				} else {
-					alert("请上传Excel、Word、PDF文档");
+					alert("请上传Excel、Word、PDF文件");
 				}
 			}
 		}
@@ -547,12 +523,10 @@ function wait_load(id) {
 
 //添加自定义类型
 function addclass(){
-	$('#select_id.selectpicker').empty();
 	var name = $("#className").val();
 	if(name==null||name==""){
 		alert("请输入要添加的类型名称!");
 	}else{
-		newTypeName =name;
 		$.ajax({
 			type : "get",
 			url : "types-after",
@@ -589,8 +563,6 @@ function addclass(){
 }
 //关闭自定义添加按钮
 function closeModal(){
-	$('#select_id.selectpicker').empty();
-
 	$.ajax({
 		type : "get",
 		url : "types",
@@ -600,14 +572,12 @@ function closeModal(){
 			showType(data);
 			showTypeUp(data);
 			$("#addclass").modal('hide');
-
 		},
 		error : function(data) {
 
 		}
 	});
 }
-
 function selectFocus(){  
     document.getElementById("select_id").setAttribute("size","5");  
 }  
@@ -616,5 +586,3 @@ function selectClick(){
     document.getElementById("select_id").blur();  
     this.setAttribute("select_id","");  
 }  
-
-
