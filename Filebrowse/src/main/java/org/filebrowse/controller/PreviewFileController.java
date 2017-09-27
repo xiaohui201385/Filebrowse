@@ -72,8 +72,6 @@ public class PreviewFileController {
                 type="error";
             }
         }
-        System.out.println(type);
-        System.out.println(fileTypeService.getByName(type).size());
         
         if (fileTypeService.getByName(type).size()<1) {
         	return null;
@@ -131,7 +129,7 @@ public class PreviewFileController {
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
         String location = "C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" +  type + "/" + fileTempName;
-        System.out.println(location);
+        
         File tempFile = new File(location);
         if (!tempFile.getParentFile().exists()) {
             if (!tempFile.getParentFile().mkdirs()) {

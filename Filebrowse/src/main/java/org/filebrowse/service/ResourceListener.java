@@ -25,7 +25,7 @@ import org.filebrowse.entity.PreviewFile;
 
 public class ResourceListener {
 
-    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+    private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
     private WatchService ws;
     private String listenerPath;
     private static Map<String, String> result = new HashMap<>();
