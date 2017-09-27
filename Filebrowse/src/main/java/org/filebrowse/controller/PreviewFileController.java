@@ -150,17 +150,29 @@ public class PreviewFileController {
 
         is.close();
         out.close();
-        FileType byName = fileTypeService.getByName(type).get(0);
+        long start=new Date().getTime();
+        List<PreviewFile> byLocation=null;
+        while (true) {
+        	 byLocation = previewFileService.getByLocation(location);
+        	 if (byLocation!=null&&byLocation.size()>0) {
+				break;
+			}
+			long end = new Date().getTime();
+			long last=end-start;
+			if(last>=20000){
+				break;
+			}
+		}
         
-        if (byName==null) {
-        	response.getWriter().println("<script>alert('上传是失败');window.location.href='index';</script>");
+        
+        if (byLocation==null) {
+        	response.getWriter().println("<script>alert('上传失败');window.location.href='index';</script>");
             return "index";
 		}else {
 			response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
 	        return "index";
 		}
     }
-
     @ResponseBody
     @RequestMapping(value="/downloadFile",method=RequestMethod.POST)
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,

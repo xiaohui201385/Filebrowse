@@ -105,12 +105,13 @@ public class ResourceListener {
             fp.register(listener.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_CREATE);
         }
+        System.out.println("init");
         File[] listFiless = getTypeList();
-        System.out.println(1);
 //        previewFileService.delAll();
         fileTypeService.delAll();
         List<FileType> initTypes = initType(listFiless);
         initFiles(initTypes);
+        System.out.println("init success");
         return result;
     }
 
@@ -122,7 +123,6 @@ public class ResourceListener {
             this.service = service;
             this.rootPath = rootPath;
         }
-        private int id;
         
 
         public void run() {
@@ -136,7 +136,6 @@ public class ResourceListener {
                         // 1.获取文件的全路径和事件触发类型
                         String filePath = rootPath + "/" + event.context();
                         String name = event.context() + "";
-                        System.out.println(name);
                         String kind = event.kind() + "";
                         // 2.根据路径获取文件
                         String[] split = filePath.split("/");
@@ -149,7 +148,8 @@ public class ResourceListener {
                                 FileType fileType = new FileType(name);
                                 boolean contains = all.contains(fileType);
                                 if (!contains) {
-                                    fileTypeService.addOneDefault(fileType);
+                                    int addOneDefault = fileTypeService.addOneDefault(fileType);
+                                    System.out.println("create dir :"+addOneDefault);
                                     List<PreviewFile> previewFiles = new ArrayList<>();
                                     fileType=fileTypeService.getByName(name).get(0);
                                     int type = fileType.getId();
@@ -168,6 +168,10 @@ public class ResourceListener {
                                     }
                                     previewFileService.addList(previewFiles);
                                 }
+                                ResourceListener resourceListener = new ResourceListener(filePath);
+                                Path p = Paths.get(filePath);
+                                p.register(resourceListener.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
+                                        StandardWatchEventKinds.ENTRY_CREATE);
                             } else if (len == 7) {// 文件
                                 List<PreviewFile> byLocation = previewFileService.getByLocation(filePath);
                                 if (byLocation != null && byLocation.size() > 0) {
@@ -176,7 +180,6 @@ public class ResourceListener {
                                 } else {
                                     File file = new File(filePath);
                                     String typeName = split[split.length - 2];
-                                    System.out.println(typeName);
                                     int type = fileTypeService.getByName(typeName).get(0).getId();
                                     int insertOne = previewFileService.insertOne(new PreviewFile(file.getName(),
                                             new Date(file.lastModified()), filePath, type));
@@ -198,18 +201,18 @@ public class ResourceListener {
 
                             } else if (len == 7) {
                                 File file = new File(filePath);
-                                previewFileService.updateByLocation(filePath, new Date(file.lastModified()));
+                                int updateByLocation = previewFileService.updateByLocation(filePath, new Date(file.lastModified()));
+                                System.out.println("update file :"+updateByLocation);
                             }
                         }
 
                     }
                     watchKey.reset();
-                    result.clear();
                 }
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             } finally {
-                System.out.println("fdsfsdf");
+                System.out.println("error");
                 try {
                     service.close();
                 } catch (IOException e) {

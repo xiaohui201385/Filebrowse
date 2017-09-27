@@ -203,6 +203,7 @@ function showTypeUp(data) {
 
 	var t = 0;
 	var index = -1;
+	
 	for(var i=0;i<data.length ;i++){
 		if(data[i].name == newTypeName){
 			t=1;
@@ -261,7 +262,7 @@ function clickaction(name, li_id,id) {
 		},
 		dataType : "json",
 		success : function(data) {
-			console.log(data);
+			//console.log(data);
 			pageNow = data.pageNum;
 			pages = data.pages;
 			judgePage(pageNow, pages);
@@ -555,24 +556,14 @@ function addclass(){
 			data:{typeName:name},
 			dataType : "json",
 			success : function(data) {
-				$.ajax({
-					type : "get",
-					url : "types",
-					async : true,
-					dataType : "json",
-					success : function(data) {
-						showType(data);
-						showTypeUp(data);
-						$("#addclass").modal('hide');
-
-					},
-					error : function(data) {
-
-					}
-				});
+				console.log(data);
+				showType(data);
+				showTypeUp(data);
+				$("#addclass").modal('hide');
+				
 			},
 			error : function(data) {
-
+				alert("添加失败！")
 			}
 		});
 		

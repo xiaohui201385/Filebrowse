@@ -43,7 +43,22 @@ public class FileTypeController {
             File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
             file.mkdirs();
         }
-        
+        long start=new Date().getTime();
+        List<FileType> byNewName=null;
+        while (true) {
+        	byNewName = fileTypeService.getByName(typeName);
+        	if (byNewName!=null&&byNewName.size()>0) {
+				break;
+			}
+			long end = new Date().getTime();
+			long last=end-start;
+			if(last>=20000){
+				break;
+			}
+		}
+       if (byNewName==null) {
+		return null;
+       }
         return fileTypeService.getAll();
     }
     

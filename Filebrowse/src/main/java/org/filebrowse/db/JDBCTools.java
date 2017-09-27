@@ -20,8 +20,8 @@ public class JDBCTools {
 //		            minIdel=5
 //		            maxWait=1000000
 			properties.setProperty("username", "root");
-			properties.setProperty("password", "123");
-			properties.setProperty("url", "jdbc:mysql://101.132.106.170:3306/ssm_crud?characterEncoding=utf8");
+			properties.setProperty("password", "123456");
+			properties.setProperty("url", "jdbc:mysql://localhost:3306/ssm_crud?characterEncoding=utf8");
 			properties.setProperty("driverClassName", "com.mysql.jdbc.Driver");
 			properties.setProperty("initialSize", "10");
 			properties.setProperty("maxActive", "10000");
