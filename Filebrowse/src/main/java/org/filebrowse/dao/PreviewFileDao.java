@@ -41,10 +41,10 @@ public class PreviewFileDao {
 	    return jdbcTemplate.query(sql, rowMapper, type);
 	}
 	
-	public List<PreviewFile> getByNameAndDate(String name,Date date){
-	    System.out.println(date.toString());
-	    String sql = "select * from PreviewFile where file_name=? and create_time=?";
-	    return jdbcTemplate.query(sql, rowMapper, name,date);
+	public List<PreviewFile> getByNameAndDate(String name,int id){
+	    
+	    String sql = "select * from PreviewFile where file_name=? and id=?";
+	    return jdbcTemplate.query(sql, rowMapper, name,id);
 	}
 	
 	public List<PreviewFile> getByLocation(String location){

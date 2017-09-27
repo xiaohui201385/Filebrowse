@@ -135,8 +135,8 @@ function ShowTable(data, state) {
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
-							+ datetime
-							+ "\" name='createTime'/></form></td></tr>";
+							+ data.list[i].id
+							+ "\" name='id'/></form></td></tr>";
 
 				}
 
@@ -166,8 +166,8 @@ function ShowTable(data, state) {
 					table_html += "<button type='submit'  class='btn btn-primary'>下载</button><input type='text' style='display:none' value=\""
 							+ data.list[i].fileName
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
-							+ datetime
-							+ "\" name='createTime'/></form></td></tr>";
+							+ data.list[i].id
+							+ "\" name='id'/></form></td></tr>";
 
 				}
 			}
@@ -560,30 +560,27 @@ function addclass(){
 			data:{typeName:name},
 			dataType : "json",
 			success : function(data) {
-				console.log(data);
-				showType(data);
-				showTypeUp(data);
-				$("#addclass").modal('hide');
+				$.ajax({
+					type : "get",
+					url : "types",
+					async : true,
+					dataType : "json",
+					success : function(data) {
+						showType(data);
+						showTypeUp(data);
+						$("#addclass").modal('hide');
+
+					},
+					error : function(data) {
+
+					}
+				});
 			},
 			error : function(data) {
 
 			}
 		});
-		$.ajax({
-			type : "post",
-			url : "typeList",
-			async : true,
-			dataType : "json",
-			success : function(data) {
-				console.log(data);
-				pageNow = data.pageNum;
-				pages = data.pages;
-				judgePage(pageNow, pages);
-				ShowTable(data);
-			},
-			error : function(data) {
-			}
-		});
+		
 	}
 	
 }
@@ -607,14 +604,5 @@ function closeModal(){
 		}
 	});
 }
-
-function selectFocus(){  
-    document.getElementById("select_id").setAttribute("size","5");  
-}  
-function selectClick(){  
-    document.getElementById("select_id").removeAttribute("size");  
-    document.getElementById("select_id").blur();  
-    this.setAttribute("select_id","");  
-}  
 
 

@@ -28,7 +28,12 @@ public class FileType {
         this.name = name;
     }
     
-    public FileType() {
+    public FileType(String name) {
+		super();
+		this.name = name;
+	}
+
+	public FileType() {
         // TODO Auto-generated constructor stub
     }
 }

@@ -38,76 +38,23 @@ public class PreviewFileController {
 
     @RequestMapping("/index")
     public String index() {
-        File[] listFiles = getTypeList();
-        //previewFileService.delAll();
-        fileTypeService.delAll();
-        List<FileType> initTypes = initType(listFiles);
-        initFiles(initTypes);
+        
         return "index";
     }
     
     @RequestMapping("/index2")
     public String index2() {
-        File[] listFiles = getTypeList();
-        //previewFileService.delAll();
-        fileTypeService.delAll();
-        List<FileType> initTypes = initType(listFiles);
-        initFiles(initTypes);
+        
         return "index2";
     }
 
     @RequestMapping("/")
     public String home() {
-        File[] listFiles = getTypeList();
-        //previewFileService.delAll();
-        fileTypeService.delAll();
-        List<FileType> initTypes = initType(listFiles);
-        initFiles(initTypes);
+        
         return "index";
     }
 
-    private void initFiles(List<FileType> initTypes) {
-        List<PreviewFile> previewFiles=new ArrayList<>();
-        for(FileType fileType:initTypes){
-            int type=fileType.getId();
-            String typeName=fileType.getName();
-            File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
-            File[] files = file.listFiles();
-            if(files.length>0){
-                for(File f:files){
-                    String fileName=f.getName();
-                    Date time=new Date(f.lastModified());
-                    String location=f.getAbsolutePath();
-                    PreviewFile previewFile = new PreviewFile(fileName, time, location, type);
-                    previewFiles.add(previewFile);
-                }
-            }
-        }
-        previewFileService.addList(previewFiles);
-    }
-
-    private List<FileType> initType(File[] listFiles) {
-        List<FileType> fileTypes=new ArrayList<>();
-        if(listFiles.length>0){
-            for(int i=0;i<listFiles.length;i++){
-                File listFile=listFiles[i];
-                String name=listFile.getName();
-                FileType fileType=new FileType(i+1, name);
-                fileTypes.add(fileType);
-            }
-        }
-        fileTypeService.addList(fileTypes);
-        return fileTypes;
-    }
     
-    private File[] getTypeList(){
-        File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/");
-        if(!file.exists()){
-            file.mkdirs();
-        }
-        File[] listFiles = file.listFiles();
-        return listFiles;
-    }
     
     
 
@@ -196,43 +143,45 @@ public class PreviewFileController {
         is.close();
         out.close();
         FileType byName = fileTypeService.getByName(type).get(0);
-        if(previewFileService.getByLocation(tempFile.getAbsolutePath())!=null&&previewFileService.getByLocation(tempFile.getAbsolutePath()).size()>0){
-        	previewFileService.updateByLocation(tempFile.getAbsolutePath(), new Date());
-        	//response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
-        	response.getWriter().println("<script>alert('上传成功');window.location.href='index?a="+new Date().getTime()+"';</script>");
+        
+        if (byName==null) {
+        	response.getWriter().println("<script>alert('上传是失败');window.location.href='index';</script>");
             return "index";
-        }
-        PreviewFile previewFile = new PreviewFile(fileTempName, new Date(), tempFile.getAbsolutePath(), byName.getId());
-        previewFileService.insertOne(previewFile);
-        //response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
-        response.getWriter().println("<script>alert('上传成功');window.location.href='index?a="+new Date().getTime()+"';</script>");
-        return "index";
+		}else {
+			response.getWriter().println("<script>alert('上传成功');window.location.href='index';</script>");
+	        return "index";
+		}
     }
 
     @ResponseBody
     @RequestMapping(value="/downloadFile",method=RequestMethod.POST)
     public String previewDownload(@RequestParam(value = "fileName", required = true) String fileName,
-            @RequestParam(value = "createTime", required = true) String createTime,HttpServletResponse response) {
-        System.out.println(fileName);
-        System.out.println(createTime);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            @RequestParam(value = "id", required = true) int id,HttpServletResponse response) {
+    	
         try {
-            PreviewFile result = previewFileService.getByNameAndDate(fileName, format.parse(createTime)).get(0);
-            String realPath=result.getLocation();
-            File file = new File(realPath);
-            FileInputStream fis=new FileInputStream(file);
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/force-download");
-            response.addHeader("Content-Disposition",
-                  "attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO8859-1"));
-            ServletOutputStream sos = response.getOutputStream();
-            byte[] buffer=new byte[1024];
-            int len=-1;
-            while((len=fis.read(buffer))!=-1){
-                sos.write(buffer, 0, len);
-            }
-            sos.close();
-            fis.close();
+        	List<PreviewFile> previewName = previewFileService.getByNameAndDate(fileName, id);
+            
+        	if (previewName==null ||previewName.size()<1) {
+        		response.getWriter().println("<script>alert('not file foud');window.location.href='index';</script>");
+    		}else {
+    			PreviewFile result = previewName.get(0);
+                String realPath=result.getLocation();
+                File file = new File(realPath);
+                FileInputStream fis=new FileInputStream(file);
+                response.setCharacterEncoding("utf-8");
+                response.setContentType("application/force-download");
+                response.addHeader("Content-Disposition",
+                      "attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO8859-1"));
+                ServletOutputStream sos = response.getOutputStream();
+                byte[] buffer=new byte[1024];
+                int len=-1;
+                while((len=fis.read(buffer))!=-1){
+                    sos.write(buffer, 0, len);
+                }
+                sos.close();
+                fis.close();
+    		}
+        	
         } catch (Exception e) {
             e.printStackTrace();
         }
