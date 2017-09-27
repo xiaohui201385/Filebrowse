@@ -9,6 +9,7 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,7 +61,11 @@ public class ResourceListener {
                 }
             }
         }
-        previewFileService.addList(previewFiles);
+        try {
+            previewFileService.addList(previewFiles);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static List<FileType> initType(File[] listFiles) {
@@ -73,7 +78,11 @@ public class ResourceListener {
                 fileTypes.add(fileType);
             }
         }
-        fileTypeService.addList(fileTypes);
+        try {
+            fileTypeService.addList(fileTypes);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return fileTypes;
     }
 
@@ -99,7 +108,6 @@ public class ResourceListener {
         File[] listFiles = file.listFiles();
         for (File f : listFiles) {
             Path fp = Paths.get(path+"/"+f.getName());
-            System.out.println(fp);
             String fpath=fp.toString().replaceAll("\\\\", "/");
             ResourceListener listener=new ResourceListener(fpath);
             fp.register(listener.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
@@ -108,7 +116,11 @@ public class ResourceListener {
         System.out.println("init");
         File[] listFiless = getTypeList();
 //        previewFileService.delAll();
-        fileTypeService.delAll();
+        try {
+            fileTypeService.delAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         List<FileType> initTypes = initType(listFiless);
         initFiles(initTypes);
         System.out.println("init success");
@@ -132,7 +144,7 @@ public class ResourceListener {
                     List<WatchEvent<?>> watchEvents = watchKey.pollEvents();
                     for (WatchEvent<?> event : watchEvents) {
                         // TODO 根据事件类型采取不同的操作。。。。。。。
-                        System.out.println(rootPath+"/"+event.context()+" : "+event.kind());
+                        System.out.println("watchEvent: "+rootPath+"/"+event.context()+" : "+event.kind());
                         // 1.获取文件的全路径和事件触发类型
                         String filePath = rootPath + "/" + event.context();
                         String name = event.context() + "";
@@ -168,10 +180,11 @@ public class ResourceListener {
                                     }
                                     previewFileService.addList(previewFiles);
                                 }
-                                ResourceListener resourceListener = new ResourceListener(filePath);
-                                Path p = Paths.get(filePath);
-                                p.register(resourceListener.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
+                                ResourceListener rl = new ResourceListener(filePath);
+                                Path pp = Paths.get(filePath);
+                                pp.register(rl.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
                                         StandardWatchEventKinds.ENTRY_CREATE);
+                                System.out.println("add listen for "+filePath);
                             } else if (len == 7) {// 文件
                                 List<PreviewFile> byLocation = previewFileService.getByLocation(filePath);
                                 if (byLocation != null && byLocation.size() > 0) {
@@ -209,7 +222,7 @@ public class ResourceListener {
                     }
                     watchKey.reset();
                 }
-            } catch (InterruptedException | IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 System.out.println("error");
