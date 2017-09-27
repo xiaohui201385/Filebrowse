@@ -60,16 +60,24 @@ public class PreviewFileController {
 
     @ResponseBody
     @RequestMapping(value="/typeList",method=RequestMethod.POST)
-    public PageMessage<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pageNum",required=false)Integer pn) {
+    public PageMessage<PreviewFile> getListByType(@RequestParam(value = "type", required = false) String type,@RequestParam(value="pageNum",required=false)Integer pn
+    		,HttpServletResponse response) throws IOException {
         if (type == null) {
             List<FileType> all = fileTypeService.getAll();
             if(all!=null&all.size()>0){
                 type = fileTypeService.getAll().get(0).getName();
+                
             }
             else{
                 type="error";
             }
         }
+        System.out.println(type);
+        System.out.println(fileTypeService.getByName(type).size());
+        
+        if (fileTypeService.getByName(type).size()<1) {
+        	return null;
+		}
         FileType byName = new FileType(1, null);
         if(fileTypeService.getByName(type)!=null&&fileTypeService.getByName(type).size()>0){
             byName=fileTypeService.getByName(type).get(0);

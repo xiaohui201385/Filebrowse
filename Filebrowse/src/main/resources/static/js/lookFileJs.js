@@ -27,7 +27,7 @@ $(document).ready(function() {
 		async : true,
 		dataType : "json",
 		success : function(data) {
-			console.log(data);
+			
 			pageNow = data.pageNum;
 			pages = data.pages;
 			judgePage(pageNow, pages);
@@ -57,30 +57,25 @@ var newTypeName ="";
 // var menudata = ["通知","会议","政策","活动"]
 // 显示左边菜单
 function showType(data) {
+	
 	var ul = "<ul id='treeMenu' class='' >";
 	for (var i = 0; i < data.length; i++) {
+		
 		if (i == 0) {
 			typeName = data[i].name;
 			ul += "<li class=' fristcolor  text-center' id=\"li_"
 					+ i
 					+ "\" style='list-style:none'><a href='#' type='button'  onclick='clickaction(\""
-					+ data[i].name + "\",\"" + i + "\")'>" + data[i].name
+					+ data[i].name + "\",\"" + i + "\",\"" + data[i].id + "\")'>" + data[i].name
 					+ "</a></li>"
 		} else {
 			ul += "<li class='color text-center' id=\"li_"
 					+ i
 					+ "\" style='list-style:none'><a  href='#' type='button' onclick='clickaction(\""
-					+ data[i].name + "\",\"" + i + "\")'>" + data[i].name
+					+ data[i].name + "\",\"" + i + "\",\"" + data[i].id + "\")'>" + data[i].name
 					+ "</a></li>"
 		}
-		/*
-		 * if(i==0){ typeName = data[i].name; ul +="<li class='  active text-center' style='list-style:none'><button
-		 * class='btn btn-link active'
-		 * onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</button></li>"
-		 * }else{ ul +="<li class=' text-center' style='list-style:none'><button
-		 * class='btn btn-link '
-		 * onclick='clickaction(\""+data[i].name+"\")'>"+data[i].name+"</button></li>" }
-		 */
+		
 	}
 	;
 	ul += "</ul>";
@@ -113,7 +108,6 @@ Date.prototype.format = function(format) {
 function ShowTable(data, state) {
 	if (data.list) {
 		if (state == "" || state == null) {
-
 			var tablethead = "<tr><th width='50%'>文档名</th><th width='25%'>上传日期</th><th width='25%'>操作</th></tr>"
 			var table_html = "";
 			if (data.list.length == 0) {
@@ -168,7 +162,6 @@ function ShowTable(data, state) {
 							+ "\" name='fileName'/> <input type='text' style='display:none' value=\""
 							+ data.list[i].id
 							+ "\" name='id'/></form></td></tr>";
-
 				}
 			}
 
@@ -251,7 +244,7 @@ function showTypeUp(data) {
 }
 
 // 点击左边
-function clickaction(name, li_id) {
+function clickaction(name, li_id,id) {
 	typeName = name;
 	state = 0;
 	$('li').removeClass('fristcolor');
@@ -268,12 +261,14 @@ function clickaction(name, li_id) {
 		},
 		dataType : "json",
 		success : function(data) {
+			console.log(data);
 			pageNow = data.pageNum;
 			pages = data.pages;
 			judgePage(pageNow, pages);
 			ShowTable(data);
 		},
 		error : function(data) {
+			alert("该类型已经被修改，请刷新页面!")
 		}
 	});
 
@@ -604,5 +599,6 @@ function closeModal(){
 		}
 	});
 }
+
 
 
