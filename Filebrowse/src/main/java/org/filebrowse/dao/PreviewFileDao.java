@@ -59,7 +59,7 @@ public class PreviewFileDao {
 	
 	public List<PreviewFile> getByNameLike(String str){
 	    String param="%"+str+"%";
-	    System.out.println(param);
+	    
 	    String sql="select * from PreviewFile where file_name like ? order by create_time desc";
 	    return jdbcTemplate.query(sql, rowMapper, param);
 	}

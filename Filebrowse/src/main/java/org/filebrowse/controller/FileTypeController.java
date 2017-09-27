@@ -39,7 +39,7 @@ public class FileTypeController {
     public List<FileType> getAfterAdd(@RequestParam(value="typeName",required=true)String typeName ){
         List<FileType> byName = fileTypeService.getByName(typeName);
         if(byName==null||byName.size()<1){
-            System.out.println(1);
+            
             File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
             file.mkdirs();
         }
