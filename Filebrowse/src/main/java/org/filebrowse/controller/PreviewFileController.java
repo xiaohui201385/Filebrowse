@@ -126,6 +126,12 @@ public class PreviewFileController {
         String tempStr=file.getOriginalFilename();
         String[] split = tempStr.split("\\\\");
         String fileTempName=split[split.length-1];
+        String hz=fileTempName.substring(fileTempName.lastIndexOf("."));
+        if(hz.contains("wps")) {
+        	hz=".doc";
+        }
+        String fn=fileTempName.substring(0, fileTempName.lastIndexOf("."));
+        fileTempName=fn+hz;
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
         String location = "C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" +  type + "/" + fileTempName;
