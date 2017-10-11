@@ -134,7 +134,7 @@ public class PreviewFileController {
         fileTempName=fn+hz;
         InputStream is = file.getInputStream();
         // 上传文件所处的路径
-        String location = "C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" +  type + "/" + fileTempName;
+        String location = "D:/doc_resources/" +  type + "/" + fileTempName;
         
         File tempFile = new File(location);
         if (!tempFile.getParentFile().exists()) {

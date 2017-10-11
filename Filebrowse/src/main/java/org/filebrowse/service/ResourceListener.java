@@ -48,7 +48,7 @@ public class ResourceListener {
         for (FileType fileType : initTypes) {
             int type = fileType.getId();
             String typeName = fileType.getName();
-            File file = new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" + typeName + "/");
+            File file = new File("D:/doc_resources/" + typeName + "/");
             File[] files = file.listFiles();
             if (files.length > 0) {
                 for (File f : files) {
@@ -87,7 +87,7 @@ public class ResourceListener {
     }
 
     private static File[] getTypeList() {
-        File file = new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/");
+        File file = new File("D:/doc_resources/");
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -155,7 +155,7 @@ public class ResourceListener {
                         // 3.根据触发类型和文件的类型来判断CRUD操作
                         // 1.Create : 用全路径去匹配
                         if (kind.equals("ENTRY_CREATE")) {
-                            if (len == 6) {// 目录
+                            if (len == 3) {// 目录
                                 List<FileType> all = fileTypeService.getAll();
                                 FileType fileType = new FileType(name);
                                 boolean contains = all.contains(fileType);
@@ -166,7 +166,7 @@ public class ResourceListener {
                                     fileType=fileTypeService.getByName(name).get(0);
                                     int type = fileType.getId();
                                     String typeName = fileType.getName();
-                                    File file = new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/" + typeName + "/");
+                                    File file = new File("D:/doc_resources/" + typeName + "/");
                                     File[] files = file.listFiles();
                                     if (files.length > 0) {
                                         for (File f : files) {
@@ -185,12 +185,14 @@ public class ResourceListener {
                                 pp.register(rl.ws, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
                                         StandardWatchEventKinds.ENTRY_CREATE);
                                 System.out.println("add listen for "+filePath);
-                            } else if (len == 7) {// 文件
+                            } else if (len == 4) {// 文件
+                                System.out.println("create 文件");
                                 List<PreviewFile> byLocation = previewFileService.getByLocation(filePath);
                                 if (byLocation != null && byLocation.size() > 0) {
                                     // 文件存在
                                     System.out.println("文件已存在");
                                 } else {
+                                    System.out.println("文件不存在需要创建");
                                     File file = new File(filePath);
                                     String typeName = split[split.length - 2];
                                     int type = fileTypeService.getByName(typeName).get(0).getId();
@@ -201,18 +203,18 @@ public class ResourceListener {
                             }
                         } else if (kind.equals("ENTRY_DELETE")) {
                             // 2.Delete : 判断文件类型来执行
-                            if (len == 6) {
+                            if (len == 3) {
                                 int delByName = fileTypeService.delByName(name);
                                 System.out.println("del type:"+delByName);
-                            } else if (len == 7) {
+                            } else if (len == 4) {
                                 int delByLocation = previewFileService.delByLocation(filePath);
                                 System.out.println("del file:"+delByLocation);
                             }
                         } else {
                             // 3.Modified : 在是目录又是Modified的时候,不做操作
-                            if (len == 6) {
+                            if (len == 3) {
 
-                            } else if (len == 7) {
+                            } else if (len == 4) {
                                 File file = new File(filePath);
                                 int updateByLocation = previewFileService.updateByLocation(filePath, new Date(file.lastModified()));
                                 System.out.println("update file :"+updateByLocation);

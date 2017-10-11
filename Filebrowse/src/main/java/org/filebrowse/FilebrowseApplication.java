@@ -11,6 +11,6 @@ public class FilebrowseApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(FilebrowseApplication.class, args);
-		ResourceListener.addListener("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview");
+		ResourceListener.addListener("D:/doc_resources");
 	}
 }

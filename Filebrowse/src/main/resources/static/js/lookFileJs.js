@@ -474,8 +474,9 @@ function lookfile(name) {
 	var CopyViewUrlLinkId = "CopyViewUrl";
 	var CopyEmbedCodeLinkId = "CopyEmbedCode";
 
-	var originalUrl = "http://docviewserver.docview.com/op/docview/" + type
-			+ "/" + name;
+	var originalUrl = "\\\\DOCVIEWSERVER\\doc_resources\\" + type
+			+ "\\" + name;
+	console.log("originalUrl"+originalUrl);
 
 	var generatedViewUrl = ViewUrlMask.replace(UrlPlaceholder,
 			encodeURIComponent(originalUrl));
