@@ -117,7 +117,7 @@ public class PreviewFileController {
     }
 
     
-    @RequestMapping("/preview-fileupload")
+    @RequestMapping(value="/preview-fileupload",method=RequestMethod.POST)
     public String fileUpload(@RequestParam(value = "file", required = true) MultipartFile file,
             @RequestParam(value = "type", required = true) String type, HttpServletResponse response)
             throws IOException {
