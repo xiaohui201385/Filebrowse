@@ -21,12 +21,15 @@ public class JDBCTools {
 //		            maxWait=1000000
 			properties.setProperty("username", "root");
 			properties.setProperty("password", "123456");
-			properties.setProperty("url", "jdbc:mysql://localhost:3306/ssm_crud?characterEncoding=utf8");
+			properties.setProperty("url", "jdbc:mysql://localhost:3306/ssm_crud?autoReconnect=true&characterEncoding=utf8");
 			properties.setProperty("driverClassName", "com.mysql.jdbc.Driver");
 			properties.setProperty("initialSize", "10");
 			properties.setProperty("maxActive", "10000");
 			properties.setProperty("minIdel", "5");
 			properties.setProperty("maxWait", "10000000");
+			properties.setProperty("validation-query","SELECT 1");
+			properties.setProperty("test-on-borrow","true");
+			properties.setProperty("remove-abandoned","true");
 			ds = BasicDataSourceFactory.createDataSource(properties);
 		} catch (Exception e) {
 			e.printStackTrace();
