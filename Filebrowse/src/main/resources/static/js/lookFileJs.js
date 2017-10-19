@@ -250,7 +250,7 @@ function clickaction(name, li_id,id) {
 	state = 0;
 	$('li').removeClass('fristcolor');
 	$('li').removeClass('color');
-	$('li').addClass('color');
+	$('#treeMenu li').addClass('color');
 	$("#li_" + li_id + "").addClass('fristcolor');
 	$("#searchname").val("");
 	$.ajax({
@@ -284,7 +284,7 @@ function searchfile() {
 	}else{
 		$('li').removeClass('fristcolor');
 		$('li').removeClass('color');
-		$('li').addClass('color');
+		$('#treeMenu li').addClass('color');
 		
 		state = 1;
 		$.ajax({
@@ -392,7 +392,7 @@ function page(e) {
 	if (state == 1) {
 		$('li').removeClass('fristcolor');
 		$('li').removeClass('color');
-		$('li').addClass('color');
+		$('#treeMenu li').addClass('color');
 		if (e == 0) {
 			$.ajax({
 				type : "post",
