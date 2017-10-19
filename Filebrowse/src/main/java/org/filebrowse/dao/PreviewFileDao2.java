@@ -28,6 +28,7 @@ public class PreviewFileDao2 extends JdbcDaoImpl<PreviewFile>{
 		Connection connection=JDBCTools.getConnection();
 		int update = update(connection, sql, file.getFileName(),file.getCreateTime(),file.getLocation(),file.getType());
 		connection.close();
+		System.out.println("insert running...");
 		return update;
 	}
 	

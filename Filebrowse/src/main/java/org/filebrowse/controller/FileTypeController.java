@@ -40,7 +40,7 @@ public class FileTypeController {
         List<FileType> byName = fileTypeService.getByName(typeName);
         if(byName==null||byName.size()<1){
             
-            File file=new File("C:/Program Files/Microsoft Office Web Apps/OpenFromUrlWeb/docview/"+typeName+"/");
+            File file=new File("D:/doc_resources/"+typeName+"/");
             file.mkdirs();
         }
         long start=new Date().getTime();
